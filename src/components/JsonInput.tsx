@@ -101,8 +101,8 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
 
   return (
     <div className="mb-8 vison-card animate-fade-in hover:shadow-purple-lg transition-all duration-300">
-      <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal font-pacifico">Input JSON</h2>
-      
+      <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal">Input JSON</h2>
+
       <div 
         className={`p-4 mb-4 border-2 border-dashed rounded-xl transition-colors ${
           isDragging ? 'bg-vison-purple/20 border-vison-purple-dark' : 'border-gray-200 hover:border-vison-purple'
