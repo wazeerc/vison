@@ -87,32 +87,34 @@ const Index: React.FC = () => {
   }, []);
 
   return (
-    <div className="container min-h-screen px-4 py-8 mx-auto">
-      <Header />
-      
-      <main className="max-w-4xl mx-auto">
-        <JsonInput onJsonChange={handleJsonChange} />
+    <div className="min-h-screen bg-gradient-to-br from-white to-vison-bg">
+      <div className="container px-4 py-8 mx-auto">
+        <Header />
         
-        <JsonTable 
-          jsonData={parsedData} 
-          isArray={isArray}
-          onDataChange={handleDataChange} 
-        />
+        <main className="max-w-4xl mx-auto">
+          <JsonInput onJsonChange={handleJsonChange} />
+          
+          <JsonTable 
+            jsonData={parsedData} 
+            isArray={isArray}
+            onDataChange={handleDataChange} 
+          />
+          
+          {parsedData && (
+            <div className="flex justify-end mt-6 animate-fade-in">
+              <button 
+                onClick={handleDownload}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
+              >
+                <DownloadIcon className="w-5 h-5" />
+                Download JSON
+              </button>
+            </div>
+          )}
+        </main>
         
-        {parsedData && (
-          <div className="flex justify-end mt-6">
-            <button 
-              onClick={handleDownload}
-              className="flex items-center gap-2 vison-btn-secondary"
-            >
-              <DownloadIcon className="w-5 h-5" />
-              Download JSON
-            </button>
-          </div>
-        )}
-      </main>
-      
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };

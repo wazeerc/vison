@@ -100,19 +100,19 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
   };
 
   return (
-    <div className="mb-8 vison-card animate-fade-in">
+    <div className="mb-8 vison-card animate-fade-in hover:shadow-purple-lg transition-all duration-300">
       <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal">Input JSON</h2>
       
       <div 
         className={`p-4 mb-4 border-2 border-dashed rounded-xl transition-colors ${
-          isDragging ? 'bg-vison-blue/20 border-vison-blue-dark' : 'border-gray-200 hover:border-vison-blue'
+          isDragging ? 'bg-vison-purple/20 border-vison-purple-dark' : 'border-gray-200 hover:border-vison-purple'
         }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
         <Textarea
-          className="w-full min-h-[160px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-blue focus:bg-white"
+          className="w-full min-h-[160px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-purple focus:bg-white transition-all duration-200"
           placeholder="Paste your JSON here..."
           value={jsonText}
           onChange={handleTextChange}
@@ -127,7 +127,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
         <div className="flex gap-2">
           <button
             onClick={handleReset}
-            className="flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors"
+            className="flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors hover:shadow-soft active:scale-[0.98]"
             title="Reset"
           >
             <RotateCcw className="w-4 h-4" />
@@ -143,7 +143,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
           />
           <button
             onClick={triggerFileInput}
-            className="flex items-center gap-2 vison-btn"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
           >
             <UploadIcon className="w-5 h-5" />
             Upload JSON file

@@ -62,7 +62,7 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, isArray, onDataChange }
 
   if (!jsonData || flattenedData.length === 0) {
     return (
-      <div className="vison-card text-center p-8 animate-fade-in">
+      <div className="vison-card text-center p-8 animate-fade-in hover:shadow-soft-lg transition-all duration-300">
         <TableViewIcon className="mx-auto w-12 h-12 text-gray-300 mb-3" />
         <p className="text-vison-charcoal/70">
           Enter valid JSON to see the table view
@@ -72,7 +72,7 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, isArray, onDataChange }
   }
 
   return (
-    <div className="vison-card animate-fade-in">
+    <div className="vison-card animate-fade-in hover:shadow-soft-lg transition-all duration-300">
       <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal">Table View</h2>
       
       <div className="vison-table-container overflow-auto max-h-[500px]">
@@ -90,7 +90,7 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, isArray, onDataChange }
           </thead>
           <tbody>
             {flattenedData.map((item, rowIndex) => (
-              <tr key={rowIndex} className="hover:bg-gray-50">
+              <tr key={rowIndex} className="hover:bg-gray-50 transition-colors duration-150">
                 <td className="text-center text-gray-400 font-mono">{rowIndex}</td>
                 
                 {keys.map((key) => {
@@ -102,7 +102,7 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, isArray, onDataChange }
                   return (
                     <td 
                       key={`${rowIndex}-${key}`}
-                      className={`${canEdit ? 'cursor-pointer hover:bg-vison-blue/10' : ''}`}
+                      className={`${canEdit ? 'cursor-pointer hover:bg-vison-blue/10' : ''} transition-colors duration-150`}
                       onClick={() => handleCellClick(rowIndex, key, value)}
                     >
                       {isEditing ? (
@@ -154,7 +154,7 @@ const CellContent: React.FC<{ value: any }> = ({ value }) => {
   }
   
   if (typeof value === 'string') {
-    return <span className="text-green-600 font-mono">{value}</span>;
+    return <span className="text-purple-800 font-mono">{value}</span>;
   }
   
   if (Array.isArray(value)) {
