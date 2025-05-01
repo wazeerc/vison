@@ -1,73 +1,61 @@
-# Welcome to your Lovable project
+# Vison
 
-## Project info
+Vison - Visualize JSON: The Smarter Way to View and Edit JSON
 
-**URL**: https://lovable.dev/projects/b7dbefb6-fc83-487b-ad5d-d1fe8aaed725
+## About
 
-## How can I edit this code?
+Vison is a web application designed to help non-technical individuals easily view and edit JSON data through an intuitive interface.
 
-There are several ways of editing your application.
+This application was initially vibe coded on [Lovable](https://lovable.dev/) and further fine-tuned in VSCode Agent Mode using Gemini 2.5 Pro.
 
-**Use Lovable**
+**Note:** Vison is currently in **Beta**. You might encounter bugs. Contributions are welcome! Feel free to open an issue or submit a pull request on the [GitHub repository](https://github.com/wazeerc/vison).
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b7dbefb6-fc83-487b-ad5d-d1fe8aaed725) and start prompting.
+## Purpose
 
-Changes made via Lovable will be committed automatically to this repo.
+The primary goal of Vison is to simplify the process of interacting with JSON data, making it accessible even if you're not familiar with the technical details of the format.
 
-**Use your preferred IDE**
+## Requirements
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- [Node.js](https://nodejs.org/) (LTS version recommended)
+- [npm](https://www.npmjs.com/) (comes with Node.js) or [yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.io/)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Usage
 
-Follow these steps:
+1. **Clone the repository:**
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+    ```bash
+    git clone https://github.com/wazeerc/vison.git
+    cd vison
+    ```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+2. **Install dependencies:**
 
-# Step 3: Install the necessary dependencies.
-npm i
+    ```bash
+    npm install
+    # or
+    # yarn install
+    # or
+    # pnpm install
+    ```
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+3. **Run the development server:**
 
-**Edit a file directly in GitHub**
+    ```bash
+    npm run dev
+    ```
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+    The application will be available at `http://localhost:8080` (or another port if 8080 is busy).
 
-**Use GitHub Codespaces**
+## How to Use Vison (Guides)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1. **Input JSON:** Paste your JSON data directly into the text area or drag and drop a `.json` file onto the input area.
+2. **View Data:** Vison automatically parses the JSON and displays it in a user-friendly table view. For complex, deeply nested JSON (depth >= 4), it automatically switches to a tree view. You can manually toggle between table and tree views using the buttons provided.
+3. **Edit Data:**
+    - **Table View:** Double-click on values within the table cells to edit them directly. Press Enter or click outside the cell to save the change.
+    - **Tree View:** Editing in the tree view might be limited depending on the implementation.
+4. **Download:** Once you're done editing, click the download icon button to save the modified JSON data as `vison-export.json`.
+5. **Copy:** Click the copy icon button to copy the current, formatted JSON to your clipboard.
 
-## What technologies are used for this project?
+## Contributing
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/b7dbefb6-fc83-487b-ad5d-d1fe8aaed725) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Found a bug or have a feature request? Please check the [issues page](https://github.com/wazeerc/vison/issues) or open a new one. Pull requests are also welcome!
