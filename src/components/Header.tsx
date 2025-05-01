@@ -10,9 +10,9 @@ const Header: React.FC = () => {
           <FileJson size={36} className="text-vison-purple animate-float" />
           <div className="absolute inset-0 bg-vison-purple/10 rounded-full blur-xl -z-10"></div>
         </div>
-        <h1 className="text-4xl font-bold text-vison-dark-charcoal font-montserrat">Vison</h1>
+        <h1 className="text-4xl font-bold text-vison-dark-charcoal font-nunito">Vison</h1>
       </div>
-      <p className="mt-2 text-center text-vison-charcoal/80 max-w-md mx-auto">
+      <p className="mt-2 text-center text-vison-charcoal/80 max-w-md mx-auto font-nunito">
         The Smarter Way to View, Edit and Transform JSON Data
       </p>
     </header>

@@ -24,6 +24,7 @@ export default {
 				'poppins': ['Poppins', 'sans-serif'],
 				'montserrat': ['Montserrat', 'sans-serif'],
 				'pacifico': ['Pacifico', 'cursive'],
+				'nunito': ['Nunito Sans', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
