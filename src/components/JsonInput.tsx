@@ -3,6 +3,7 @@ import React, { useState, useRef } from 'react';
 import { UploadIcon } from './HandDrawnIcons';
 import { toast } from 'sonner';
 import { parseJson } from '../utils/jsonUtils';
+import { RotateCcw } from 'lucide-react';
 
 interface JsonInputProps {
   onJsonChange: (json: string) => void;
@@ -91,6 +92,12 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
     fileInputRef.current?.click();
   };
 
+  const handleReset = () => {
+    setJsonText('');
+    onJsonChange('');
+    toast.success('Input JSON cleared');
+  };
+
   return (
     <div className="mb-8 vison-card animate-fade-in">
       <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal">Input JSON</h2>
@@ -116,7 +123,16 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
           {jsonText ? `${jsonText.length} characters` : 'No JSON input yet'}
         </div>
         
-        <div>
+        <div className="flex gap-2">
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors"
+            title="Reset"
+          >
+            <RotateCcw className="w-4 h-4" />
+            Reset
+          </button>
+          
           <input
             type="file"
             accept=".json"
