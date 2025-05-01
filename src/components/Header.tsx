@@ -1,6 +1,5 @@
-
-import React from 'react';
 import { FileJson } from 'lucide-react';
+import React from 'react';
 
 const Header: React.FC = () => {
   return (
@@ -11,9 +10,15 @@ const Header: React.FC = () => {
           <div className="absolute inset-0 bg-vison-purple/10 rounded-full blur-xl -z-10"></div>
         </div>
         <h1 className="text-4xl font-bold text-vison-dark-charcoal font-nunito">Vison</h1>
+        <span className="relative inline-block px-[8px] py-[3px] text-xs font-semibold text-vison-purple bg-gradient-to-br from-vison-peach/70 to-vison-blue/30 rounded-full shadow-soft-sm border border-vison-purple/20 -translate-y-2 overflow-hidden">
+          Beta
+          {/* Shine effect */}
+            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shine" style={{ backgroundSize: '200% 100%', animationDuration: '5s' }}></span>
+          {/* Inner glow (optional) */}
+        </span>
       </div>
       <p className="mt-2 text-center text-vison-charcoal/80 max-w-md mx-auto font-nunito">
-        The Smarter Way to View, Edit and Transform JSON Data
+        Effortlessly View, Edit, and Transform JSON Data
       </p>
     </header>
   );

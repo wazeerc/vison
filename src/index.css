@@ -1,41 +1,52 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Pacifico&family=Nunito+Sans:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
-    --background: 240 16% 98%;
-    --foreground: 240 10% 4%;
-
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 4%;
-
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 4%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.75rem;
+  }
 
-    --primary: 214 100% 91%;
-    --primary-foreground: 222 47% 11%;
-
-    --secondary: 240 5% 96%;
-    --secondary-foreground: 240 6% 10%;
-
-    --muted: 240 5% 96%;
-    --muted-foreground: 240 4% 46%;
-
-    --accent: 36 100% 94%;
-    --accent-foreground: 36 100% 62%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 240 6% 90%;
-    --input: 240 6% 90%;
-    --ring: 215 100% 91%;
-
-    --radius: 1rem;
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
   }
 
   * {
@@ -43,10 +54,20 @@
   }
 
   body {
-    @apply bg-vison-bg text-vison-charcoal font-nunito antialiased;
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply font-inter;
+    @apply antialiased;
+    background-color: #F1F0FB;
+    /* Vison BG */
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-nunito;
   }
 
@@ -65,44 +86,37 @@
 
 @layer components {
   .vison-btn {
-    @apply px-4 py-2 rounded-xl bg-vison-blue text-vison-charcoal font-medium transition-all 
-           hover:bg-vison-blue-dark hover:text-white hover:shadow-soft 
-           focus:outline-none focus:ring-2 focus:ring-vison-blue-dark focus:ring-offset-2 
-           active:scale-[0.98];
+    @apply px-4 py-2 rounded-xl bg-vison-blue text-vison-charcoal font-medium transition-all hover:bg-vison-blue-dark hover:text-white hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-vison-blue-dark focus:ring-offset-2 active:scale-[0.98];
   }
 
   .vison-btn-secondary {
-    @apply px-4 py-2 rounded-xl bg-vison-peach text-vison-charcoal font-medium transition-all 
-           hover:bg-vison-peach-dark hover:shadow-soft 
-           focus:outline-none focus:ring-2 focus:ring-vison-peach-dark focus:ring-offset-2 
-           active:scale-[0.98];
+    @apply px-4 py-2 rounded-xl bg-vison-peach text-vison-charcoal font-medium transition-all hover:bg-vison-peach-dark hover:shadow-soft focus:outline-none focus:ring-2 focus:ring-vison-peach-dark focus:ring-offset-2 active:scale-[0.98];
   }
-  
+
   .vison-card {
-    @apply bg-white/90 rounded-2xl p-6 shadow-soft border border-gray-100 transition-all hover:shadow-purple;
+    @apply bg-white p-6 rounded-2xl shadow-soft border border-gray-100;
   }
-  
+
   .vison-input {
-    @apply w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 
-           focus:ring-vison-blue focus:border-transparent;
+    @apply w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-vison-blue focus:border-transparent;
   }
-  
+
   .vison-table {
-    @apply w-full border-collapse;
+    @apply w-full text-sm;
   }
-  
+
   .vison-table th {
     @apply text-left py-3 px-4 bg-vison-purple/20 text-vison-purple-darker font-medium rounded-t-lg;
   }
-  
+
   .vison-table td {
     @apply py-2 px-4 border-b border-gray-100 transition-colors duration-150;
   }
-  
+
   .vison-table tr:last-child td {
     @apply border-b-0;
   }
-  
+
   .vison-table-container {
     @apply rounded-2xl border border-gray-100 overflow-hidden shadow-soft transition-all hover:shadow-purple;
   }
@@ -111,8 +125,38 @@
   .btn-with-icon svg {
     @apply transition-transform duration-300;
   }
-  
+
   .btn-with-icon:hover svg {
     @apply transform scale-110;
+  }
+
+  /* Custom Scrollbar Styles (Tailwind Plugin might be better, but this works) */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    /* Firefox */
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    /* Firefox */
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-radius: 10px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 10px;
+    border: 2px solid var(--scrollbar-track);
+  }
+
+  /* Define scrollbar colors using CSS variables for Tailwind integration */
+  :root {
+    --scrollbar-thumb: theme('colors.vison.purple / 50%');
+    --scrollbar-track: theme('colors.gray.100');
   }
 }

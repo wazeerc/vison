@@ -1,15 +1,14 @@
-
 import React from 'react';
 
 export const UploadIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
       style={{ filter: 'url(#hand-drawn-filter)' }}
@@ -29,13 +28,13 @@ export const UploadIcon: React.FC<{ className?: string }> = ({ className }) => {
 
 export const DownloadIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
       style={{ filter: 'url(#hand-drawn-filter)' }}
@@ -55,13 +54,13 @@ export const DownloadIcon: React.FC<{ className?: string }> = ({ className }) =>
 
 export const TableViewIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
       style={{ filter: 'url(#hand-drawn-filter)' }}
@@ -81,15 +80,67 @@ export const TableViewIcon: React.FC<{ className?: string }> = ({ className }) =
   );
 };
 
+export const TreeViewIcon: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      style={{ filter: 'url(#hand-drawn-filter)' }}
+    >
+      <defs>
+        <filter id="hand-drawn-filter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="3" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1" />
+        </filter>
+      </defs>
+      <path d="M10 10v4a2 2 0 0 0 2 2h4" />
+      <path d="M6 6v12" />
+      <path d="M10 6h8a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-8" />
+      <path d="M10 14h4a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-4" />
+    </svg>
+  );
+};
+
+export const CopyIcon: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      style={{ filter: 'url(#hand-drawn-filter)' }}
+    >
+      <defs>
+        <filter id="hand-drawn-filter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="3" result="noise" />
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1" />
+        </filter>
+      </defs>
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+    </svg>
+  );
+};
+
 export const CodeIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
       style={{ filter: 'url(#hand-drawn-filter)' }}
@@ -108,13 +159,13 @@ export const CodeIcon: React.FC<{ className?: string }> = ({ className }) => {
 
 export const JsonIcon: React.FC<{ className?: string }> = ({ className }) => {
   return (
-    <svg 
-      xmlns="http://www.w3.org/2000/svg" 
-      viewBox="0 0 24 24" 
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor" 
-      strokeWidth="2" 
-      strokeLinecap="round" 
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
       strokeLinejoin="round"
       className={className}
       style={{ filter: 'url(#hand-drawn-filter)' }}

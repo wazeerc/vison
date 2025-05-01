@@ -1,5 +1,5 @@
-
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate"; // Changed from require
 
 export default {
 	darkMode: ["class"],
@@ -102,7 +102,11 @@ export default {
 				'float': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-5px)' },
-				}
+				},
+				'shine': { // Added shine animation
+					'0%': { backgroundPosition: '-200% center' },
+					'100%': { backgroundPosition: '200% center' },
+				},
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -111,6 +115,7 @@ export default {
 				'slide-in': 'slide-in 0.3s ease-out',
 				'pulse-gentle': 'pulse-gentle 3s ease-in-out infinite',
 				'float': 'float 3s ease-in-out infinite',
+				'shine': 'shine 2s linear infinite', // Added shine animation
 			},
 			boxShadow: {
 				'soft': '0 4px 12px rgba(0, 0, 0, 0.05)',
@@ -121,5 +126,5 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [tailwindcssAnimate], // Use the imported variable
 } satisfies Config;

@@ -1,9 +1,9 @@
 
-import React, { useState, useRef } from 'react';
-import { UploadIcon } from './HandDrawnIcons';
+import { RotateCcw } from 'lucide-react';
+import React, { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { parseJson } from '../utils/jsonUtils';
-import { RotateCcw } from 'lucide-react';
+import { UploadIcon } from './HandDrawnIcons';
 import { Textarea } from './ui/textarea';
 
 interface JsonInputProps {
@@ -61,7 +61,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
-    
+
     const file = e.dataTransfer.files?.[0];
     if (!file) return;
 
@@ -103,7 +103,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
     <div className="mb-8 vison-card animate-fade-in hover:shadow-purple-lg transition-all duration-300">
       <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal">Input JSON</h2>
 
-      <div 
+      <div
         className={`p-4 mb-4 border-2 border-dashed rounded-xl transition-colors ${
           isDragging ? 'bg-vison-purple/20 border-vison-purple-dark' : 'border-gray-200 hover:border-vison-purple'
         }`}
@@ -118,22 +118,21 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
           onChange={handleTextChange}
         />
       </div>
-      
+
       <div className="flex items-center justify-between">
         <div className="text-sm text-vison-charcoal/70">
           {jsonText ? `${jsonText.length} characters` : 'No JSON input yet'}
         </div>
-        
+
         <div className="flex gap-2">
           <button
             onClick={handleReset}
             className="btn-with-icon flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors hover:shadow-soft active:scale-[0.98]"
             title="Reset"
           >
-            <RotateCcw className="w-4 h-4" />
-            Reset
+            <RotateCcw className="w-5 h-5" />
           </button>
-          
+
           <input
             type="file"
             accept=".json"
@@ -146,7 +145,6 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
             className="btn-with-icon flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
           >
             <UploadIcon className="w-5 h-5" />
-            Upload JSON file
           </button>
         </div>
       </div>
