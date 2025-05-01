@@ -101,7 +101,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
 
   return (
     <div className="mb-8 vison-card animate-fade-in hover:shadow-purple-lg transition-all duration-300">
-      <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal">Input JSON</h2>
+      <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal font-pacifico">Input JSON</h2>
       
       <div 
         className={`p-4 mb-4 border-2 border-dashed rounded-xl transition-colors ${
@@ -127,7 +127,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
         <div className="flex gap-2">
           <button
             onClick={handleReset}
-            className="flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors hover:shadow-soft active:scale-[0.98]"
+            className="btn-with-icon flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors hover:shadow-soft active:scale-[0.98]"
             title="Reset"
           >
             <RotateCcw className="w-4 h-4" />
@@ -143,7 +143,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
           />
           <button
             onClick={triggerFileInput}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
+            className="btn-with-icon flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
           >
             <UploadIcon className="w-5 h-5" />
             Upload JSON file

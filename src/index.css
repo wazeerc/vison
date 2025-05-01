@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Pacifico&display=swap');
 
 @layer base {
   :root {
@@ -105,5 +105,14 @@
   
   .vison-table-container {
     @apply rounded-2xl border border-gray-100 overflow-hidden shadow-soft transition-all hover:shadow-purple;
+  }
+
+  /* Add button icon animation on hover */
+  .btn-with-icon svg {
+    @apply transition-transform duration-300;
+  }
+  
+  .btn-with-icon:hover svg {
+    @apply transform scale-110;
   }
 }

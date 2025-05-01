@@ -15,12 +15,6 @@ const Header: React.FC = () => {
       <p className="mt-2 text-center text-vison-charcoal/80 max-w-md mx-auto">
         The Smarter Way to View, Edit and Transform JSON Data
       </p>
-      
-      <div className="max-w-xl mx-auto mt-6 flex justify-center gap-6 text-sm">
-        <a href="#features" className="text-vison-purple-dark hover:text-vison-purple transition-colors">Features</a>
-        <a href="#docs" className="text-vison-purple-dark hover:text-vison-purple transition-colors">Documentation</a>
-        <a href="#about" className="text-vison-purple-dark hover:text-vison-purple transition-colors">About</a>
-      </div>
     </header>
   );
 };

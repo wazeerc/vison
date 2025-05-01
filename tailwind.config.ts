@@ -23,6 +23,7 @@ export default {
 				'inter': ['Inter', 'sans-serif'],
 				'poppins': ['Poppins', 'sans-serif'],
 				'montserrat': ['Montserrat', 'sans-serif'],
+				'pacifico': ['Pacifico', 'cursive'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
