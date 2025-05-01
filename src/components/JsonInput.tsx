@@ -4,6 +4,7 @@ import { UploadIcon } from './HandDrawnIcons';
 import { toast } from 'sonner';
 import { parseJson } from '../utils/jsonUtils';
 import { RotateCcw } from 'lucide-react';
+import { Textarea } from './ui/textarea';
 
 interface JsonInputProps {
   onJsonChange: (json: string) => void;
@@ -110,8 +111,8 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <textarea
-          className="w-full h-40 p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-blue focus:bg-white"
+        <Textarea
+          className="w-full min-h-[160px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-blue focus:bg-white"
           placeholder="Paste your JSON here..."
           value={jsonText}
           onChange={handleTextChange}
