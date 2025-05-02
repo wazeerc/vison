@@ -19,6 +19,14 @@ The primary goal of Vison is to simplify the process of interacting with JSON da
 - [Node.js](https://nodejs.org/) (LTS version recommended)
 - [npm](https://www.npmjs.com/) (comes with Node.js) or [yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.io/)
 
+### Stack
+
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
+
 ## Usage
 
 1. **Clone the repository:**
