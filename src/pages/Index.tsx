@@ -212,24 +212,24 @@ const Index: React.FC = () => {
             </div>
           </div>
           {parsedData && (
-                {/* Copy Button */}
-                <div className="flex gap-3">
-                  <button
-                    onClick={handleCopy}
-                    aria-label="Copy JSON to clipboard"
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-medium transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98]"
-                  >
-                    <CopyIcon className="w-5 h-5" />
-                  </button>
-                  {/* Download Button */}
-                  <button
-                    onClick={handleDownload}
-                    aria-label="Download JSON file"
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
-                  >
-                    <DownloadIcon className="w-5 h-5" />
-                  </button>
-                </div>
+            <div>
+              {/* Copy Button */}
+              <div className="flex gap-3">
+                <button
+                  onClick={handleCopy}
+                  aria-label="Copy JSON to clipboard"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-medium transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98]"
+                >
+                  <CopyIcon className="w-5 h-5" />
+                </button>
+                {/* Download Button */}
+                <button
+                  onClick={handleDownload}
+                  aria-label="Download JSON file"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
+                >
+                  <DownloadIcon className="w-5 h-5" />
+                </button>
               </div>
             </div>
           )}
