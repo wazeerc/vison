@@ -313,7 +313,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
     // Check if the related target (where focus is going) is one of the control buttons
     // If it is, don't submit yet, let the button click handle it.
     const relatedTarget = e.relatedTarget as HTMLElement | null;
-    if (relatedTarget && relatedTarget.closest('.edit-control-button')) {
+    if (relatedTarget?.closest('.edit-control-button')) {
       return;
     }
     onEditSubmit(path, convertValueType(editValue)); // Submit on blur otherwise
