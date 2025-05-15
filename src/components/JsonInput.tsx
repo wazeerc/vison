@@ -100,7 +100,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
   };
 
   return (
-    <div className="mb-8 vison-card animate-fade-in hover:shadow-purple-lg transition-all duration-300">
+    <div className="my-8 vison-card animate-fade-in hover:shadow-purple-lg transition-all duration-300">
       <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal">Input JSON</h2>
 
       <div

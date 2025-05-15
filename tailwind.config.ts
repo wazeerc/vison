@@ -102,10 +102,18 @@ export default {
 				'float': {
 					'0%, 100%': { transform: 'translateY(0)' },
 					'50%': { transform: 'translateY(-5px)' },
-				},
-				'shine': { // Added shine animation
+				},				'shine': { // Added shine animation
 					'0%': { backgroundPosition: '-200% center' },
 					'100%': { backgroundPosition: '200% center' },
+				},				'view-enter': {
+					'0%': { opacity: '0', transform: 'translateY(8px)' },
+					'30%': { opacity: '0.5', transform: 'translateY(5px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' },
+				},
+				'view-exit': {
+					'0%': { opacity: '1', transform: 'translateY(0)' },
+					'70%': { opacity: '0.5', transform: 'translateY(-5px)' },
+					'100%': { opacity: '0', transform: 'translateY(-8px)' },
 				},
 			},
 			animation: {
@@ -116,6 +124,8 @@ export default {
 				'pulse-gentle': 'pulse-gentle 3s ease-in-out infinite',
 				'float': 'float 3s ease-in-out infinite',
 				'shine': 'shine 2s linear infinite', // Added shine animation
+				'view-enter': 'view-enter 0.3s ease-in',
+				'view-exit': 'view-exit 0.3s ease-out',
 			},
 			boxShadow: {
 				'soft': '0 4px 12px rgba(0, 0, 0, 0.05)',

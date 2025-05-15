@@ -178,13 +178,12 @@ const JsonTreeView: React.FC<JsonTreeViewProps> = ({ jsonData, onDataChange }) =
 
   return (
     <div className="vison-card animate-fade-in hover:shadow-soft-lg transition-all duration-300">
-      <div className="flex items-center justify-between mb-4">
-         <h2 className="text-xl font-semibold text-vison-dark-charcoal">Tree View</h2>
+      <div className="flex items-center justify-end mb-4">
          <Button
             variant="outline"
             size="icon" // Use icon size
             onClick={handleToggleExpandCollapseAll}
-            title={isFullyExpanded ? "Collapse All" : "Expand"} // Changed tooltip
+            title={isFullyExpanded ? "Collapse" : "Expand"} // Changed tooltip
             className="w-8 h-8" // Explicit size for icon button
          >
             {isFullyExpanded ? (

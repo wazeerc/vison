@@ -70,8 +70,6 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, isArray, onDataChange }
 
   return (
     <div className="vison-card animate-fade-in hover:shadow-soft-lg transition-all duration-300">
-      <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal">Table View</h2>
-
       <div className="vison-table-container overflow-auto max-h-[500px]">
         <table className="vison-table">
           <thead>

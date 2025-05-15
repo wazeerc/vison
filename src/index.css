@@ -139,6 +139,15 @@
     /* Firefox */
   }
 
+  /* View transition animations */
+  .view-container {
+    @apply relative;
+  }
+
+  .view-transition {
+    @apply animate-view-enter transition-opacity duration-300 ease-in-out;
+  }
+
   .scrollbar-thin::-webkit-scrollbar {
     width: 8px;
     height: 8px;

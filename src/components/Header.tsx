@@ -6,7 +6,7 @@ const Header: React.FC = () => {
     <header className="py-8 mb-8 border-b border-gray-100 animate-fade-in">
       <div className="flex items-center justify-center gap-3 mb-2">
         <div className="relative">
-          <FileJson size={36} className="text-vison-purple animate-float" />
+          <FileJson size={36} className="text-vison-purple" />
           <div className="absolute inset-0 bg-vison-purple/10 rounded-full blur-xl -z-10"></div>
         </div>
         <h1 className="text-4xl font-bold text-vison-dark-charcoal font-nunito">Vison</h1>
