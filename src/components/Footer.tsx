@@ -7,13 +7,15 @@ const Footer: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4">
         <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
           <div className="text-center sm:text-left">
-            <h3 className="text-lg font-semibold text-vison-dark-charcoal font-nunito">Vison - Visualize JSON</h3>
+            <h3 className="text-lg font-semibold text-vison-dark-charcoal font-nunito">
+              Vison - Visualize JSON
+            </h3>
             <p className="mt-1 text-sm text-vison-charcoal/70 font-nunito">
               The Smarter Way to View and Edit JSON
             </p>
           </div>
           <div className="flex flex-col items-center sm:items-end gap-2 text-xs text-vison-charcoal/60 font-nunito">
-             <a
+            <a
               href="https://github.com/wazeerc/vison"
               target="_blank"
               rel="noopener noreferrer"
