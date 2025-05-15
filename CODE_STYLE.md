@@ -51,7 +51,6 @@ The project includes VSCode settings that enable:
   "endOfLine": "auto",
   "jsxSingleQuote": false,
   "bracketSameLine": false,
-  "jsxBracketSameLine": false,
   "quoteProps": "as-needed",
   "embeddedLanguageFormatting": "auto"
 }
