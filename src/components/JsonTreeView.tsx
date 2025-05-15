@@ -350,39 +350,26 @@ const TreeNode: React.FC<TreeNodeProps> = ({
         {/* Added whitespace-nowrap */}
         {/* Value / Edit Input */}
         {isCurrentlyEditing ? (
-          <div className="flex items-center flex-grow ml-1">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onEditSubmit(path, convertValueType(editValue))}
+            className="ml-1 text-green-600 hover:bg-green-100 flex-shrink-0 edit-control-button h-6 w-6"
++           aria-label="Save changes"
+          >
             {' '}
-            {/* Removed min-w-0 */}
-            <Input
-              type="text"
-              autoFocus
-              className="h-6 px-1 py-0 text-sm font-mono flex-grow" // Adjusted input style, removed min-w-0
-              value={editValue}
-              onChange={handleEditChange}
-              onKeyDown={handleKeyDown}
-              onBlur={handleBlur} // Use custom blur handler
-            />
-            {/* Change button size to "icon" */}
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => onEditSubmit(path, convertValueType(editValue))}
-              className="ml-1 text-green-600 hover:bg-green-100 flex-shrink-0 edit-control-button h-6 w-6"
-            >
-              {' '}
-              {/* Adjusted size and added h/w */}
-              <Check size={14} />
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={cancelEdit}
-              className="ml-0.5 text-red-600 hover:bg-red-100 flex-shrink-0 edit-control-button h-6 w-6"
-            >
-              {' '}
-              {/* Adjusted size and added h/w */}
-              <X size={14} />
-            </Button>
+            <Check size={14} />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={cancelEdit}
+            className="ml-0.5 text-red-600 hover:bg-red-100 flex-shrink-0 edit-control-button h-6 w-6"
++           aria-label="Cancel editing"
+          >
+            {' '}
+            <X size={14} />
+          </Button>
           </div>
         ) : (
           <span
