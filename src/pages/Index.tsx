@@ -154,14 +154,12 @@ const Index: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-vison-bg">
       <div className="container px-4 py-8 mx-auto">
-        {' '}
         <Header />
         <main className="flex flex-col gap-6 max-w-4xl mx-auto">
           <JsonInput onJsonChange={handleJsonChange} />
           {/* View Switcher */}
           {parsedData && (
             <div className="flex justify-center gap-6 mb-6 animate-fade-in">
-              {' '}
               {/* Table View Button */}
               <button
                 onClick={() => handleViewChange('table')}
@@ -212,24 +210,38 @@ const Index: React.FC = () => {
             </div>
           </div>
           {parsedData && (
-            <div>
-              {/* Copy Button */}
-              <div className="flex gap-3">
+            <div className="flex justify-between items-center">
+              <button>
+                {/* Share Button */}
                 <button
-                  onClick={handleCopy}
-                  aria-label="Copy JSON to clipboard"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-medium transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98]"
+                  disabled={!handleShare()}
+                  onClick={handleShare}
+                  aria-label="Share JSON"
+                  title="This feature is coming soon!"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-semibold transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <CopyIcon className="w-5 h-5" />
+                  🚧 Share
                 </button>
-                {/* Download Button */}
-                <button
-                  onClick={handleDownload}
-                  aria-label="Download JSON file"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
-                >
-                  <DownloadIcon className="w-5 h-5" />
-                </button>
+              </button>
+              <div>
+                {/* Copy Button */}
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleCopy}
+                    aria-label="Copy JSON to clipboard"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-medium transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98]"
+                  >
+                    <CopyIcon className="w-5 h-5" />
+                  </button>
+                  {/* Download Button */}
+                  <button
+                    onClick={handleDownload}
+                    aria-label="Download JSON file"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
+                  >
+                    <DownloadIcon className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             </div>
           )}
