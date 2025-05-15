@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import Footer from '../components/Footer';
 import { CopyIcon, DownloadIcon, TableViewIcon, TreeViewIcon } from '../components/HandDrawnIcons'; // Added CopyIcon, TableViewIcon, TreeViewIcon
@@ -17,7 +17,8 @@ const Index: React.FC = () => {
   // Use JsonValue for better typing, though top level could be object or array
   const [parsedData, setParsedData] = useState<JsonValue | null>(null);
   const [isArray, setIsArray] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);  const [currentView, setCurrentView] = useState<ViewMode>('table'); // State for current view
+  const [, setError] = useState<string | null>(null);
+  const [currentView, setCurrentView] = useState<ViewMode>('table'); // State for current view
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [displayedView, setDisplayedView] = useState<ViewMode>('table'); // What's actually shown
 
@@ -39,7 +40,8 @@ const Index: React.FC = () => {
 
   // Process JSON input
   const handleJsonChange = (json: string) => {
-    setJsonString(json);    if (!json.trim()) {
+    setJsonString(json);
+    if (!json.trim()) {
       setParsedData(null);
       setError(null);
       setIsArray(false); // Reset isArray
@@ -50,7 +52,8 @@ const Index: React.FC = () => {
     const result = parseJson(json);
     setParsedData(result.data);
     setError(result.error);
-    setIsArray(result.isArray);    if (result.error) {
+    setIsArray(result.isArray);
+    if (result.error) {
       toast.error(`JSON Parse Error: ${result.error}`);
       handleViewChange('table'); // Reset view on error
     } else if (result.data) {
@@ -59,28 +62,29 @@ const Index: React.FC = () => {
       if (depth >= COMPLEXITY_DEPTH_THRESHOLD) {
         // Only switch automatically if the current view isn't already tree (to respect manual selection)
         if (currentView !== 'tree') {
-            handleViewChange('tree');
-            toast.info('Switched to Tree View due to JSON complexity.');
+          handleViewChange('tree');
+          toast.info('Switched to Tree View due to JSON complexity.');
         }
       } else {
-         // Default to table view if not complex, unless user manually switched to tree
-         if (currentView !== 'tree') {
-            handleViewChange('table');
-         }
+        // Default to table view if not complex, unless user manually switched to tree
+        if (currentView !== 'tree') {
+          handleViewChange('table');
+        }
       }
     } else {
-        handleViewChange('table'); // Reset if no data
+      handleViewChange('table'); // Reset if no data
     }
   };
 
   // Handle data changes from table/tree edits
-  const handleDataChange = (updatedData: JsonValue) => { // Use JsonValue
+  const handleDataChange = (updatedData: JsonValue) => {
+    // Use JsonValue
     setParsedData(updatedData);
     setJsonString(formatJson(updatedData));
   };
 
   // 🚧 WIP: Share feature - https://github.com/wazeerc/vison/issues/4
-  const handleShare = ():boolean => false;
+  const handleShare = (): boolean => false;
 
   // Export JSON to file
   const handleDownload = () => {
@@ -112,7 +116,8 @@ const Index: React.FC = () => {
     }
 
     const formatted = formatJson(parsedData);
-    navigator.clipboard.writeText(formatted)
+    navigator.clipboard
+      .writeText(formatted)
       .then(() => {
         toast.success('JSON copied to clipboard!');
       })
@@ -148,14 +153,16 @@ const Index: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-vison-bg">
-      <div className="container px-4 py-8 mx-auto">        <Header />
-
+      <div className="container px-4 py-8 mx-auto">
+        {' '}
+        <Header />
         <main className="flex flex-col gap-6 max-w-4xl mx-auto">
           <JsonInput onJsonChange={handleJsonChange} />
-
           {/* View Switcher */}
           {parsedData && (
-            <div className="flex justify-center gap-6 mb-6 animate-fade-in">              {/* Table View Button */}
+            <div className="flex justify-center gap-6 mb-6 animate-fade-in">
+              {' '}
+              {/* Table View Button */}
               <button
                 onClick={() => handleViewChange('table')}
                 disabled={isTransitioning}
@@ -182,9 +189,12 @@ const Index: React.FC = () => {
                 Tree View
               </button>
             </div>
-          )}          {/* Conditional View Rendering with animations */}
+          )}{' '}
+          {/* Conditional View Rendering with animations */}
           <div className="view-container relative min-h-[200px]">
-            <div className={`transition-all duration-300 ease-in-out transform ${isTransitioning ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}>
+            <div
+              className={`transition-all duration-300 ease-in-out transform ${isTransitioning ? 'opacity-0 scale-[0.98]' : 'opacity-100 scale-100'}`}
+            >
               {displayedView === 'table' && (
                 <div key="table-view" className="animate-view-enter">
                   <JsonTable
@@ -196,15 +206,11 @@ const Index: React.FC = () => {
               )}
               {displayedView === 'tree' && (
                 <div key="tree-view" className="animate-view-enter">
-                  <JsonTreeView
-                    jsonData={parsedData}
-                    onDataChange={handleDataChange}
-                  />
+                  <JsonTreeView jsonData={parsedData} onDataChange={handleDataChange} />
                 </div>
               )}
             </div>
           </div>
-
           {parsedData && (
             <div>
               <div className="flex justify-between flex-row mt-6 animate-fade-in">
@@ -214,7 +220,7 @@ const Index: React.FC = () => {
                   title="This feature is under development"
                   className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white text-base font-inter font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                🚧 Share
+                  🚧 Share
                 </button>
                 {/* Copy Button */}
                 <div className="flex gap-3">
@@ -232,11 +238,10 @@ const Index: React.FC = () => {
                     <DownloadIcon className="w-5 h-5" />
                   </button>
                 </div>
-            </div>
+              </div>
             </div>
           )}
         </main>
-
         <Footer />
       </div>
     </div>

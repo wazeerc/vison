@@ -1,8 +1,13 @@
-
 import React, { useEffect, useState } from 'react';
-import { convertValueType, flattenJson, getUniqueKeys, isEditableValue, JsonValue, updateJsonValue } from '../utils/jsonUtils';
+import {
+  convertValueType,
+  flattenJson,
+  getUniqueKeys,
+  isEditableValue,
+  JsonValue,
+  updateJsonValue,
+} from '../utils/jsonUtils';
 import { TableViewIcon } from './HandDrawnIcons';
-
 
 interface JsonTableProps {
   jsonData: JsonValue | null;
@@ -10,7 +15,7 @@ interface JsonTableProps {
   onDataChange: (updatedData: JsonValue) => void;
 }
 
-const JsonTable: React.FC<JsonTableProps> = ({ jsonData, isArray, onDataChange }) => {
+const JsonTable: React.FC<JsonTableProps> = ({ jsonData, onDataChange }) => {
   const [flattenedData, setFlattenedData] = useState<Record<string, unknown>[]>([]);
   const [keys, setKeys] = useState<string[]>([]);
   const [editCell, setEditCell] = useState<{ row: number; key: string } | null>(null);
@@ -61,9 +66,7 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, isArray, onDataChange }
     return (
       <div className="vison-card text-center p-8 animate-fade-in hover:shadow-soft-lg transition-all duration-300">
         <TableViewIcon className="mx-auto w-12 h-12 text-gray-300 mb-3" />
-        <p className="text-vison-charcoal/70">
-          Enter valid JSON to see the table view
-        </p>
+        <p className="text-vison-charcoal/70">Enter valid JSON to see the table view</p>
       </div>
     );
   }
@@ -78,7 +81,7 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, isArray, onDataChange }
               <th className="w-12 text-center">#</th>
 
               {/* Data columns */}
-              {keys.map((key) => (
+              {keys.map(key => (
                 <th key={key}>{key}</th>
               ))}
             </tr>
@@ -88,7 +91,7 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, isArray, onDataChange }
               <tr key={rowIndex} className="hover:bg-gray-50 transition-colors duration-150">
                 <td className="text-center text-gray-400 font-mono">{rowIndex}</td>
 
-                {keys.map((key) => {
+                {keys.map(key => {
                   const value = item[key];
                   const isEditing = editCell?.row === rowIndex && editCell?.key === key;
                   const canEdit = isEditableValue(value);
@@ -123,13 +126,13 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, isArray, onDataChange }
       </div>
 
       <div className="mt-4 text-sm text-vison-charcoal/70">
-        {flattenedData.length} {flattenedData.length === 1 ? 'row' : 'rows'}, {keys.length} {keys.length === 1 ? 'column' : 'columns'}
+        {flattenedData.length} {flattenedData.length === 1 ? 'row' : 'rows'}, {keys.length}{' '}
+        {keys.length === 1 ? 'column' : 'columns'}
         <span className="ml-1 text-xs">(Click on cell values to edit)</span>
       </div>
     </div>
   );
 };
-
 
 // Helper component to display cell content based on value type
 const CellContent: React.FC<{ value: unknown }> = ({ value }) => {
@@ -149,7 +152,9 @@ const CellContent: React.FC<{ value: unknown }> = ({ value }) => {
     return <span className="text-gray-500 italic">[Array: {value.length} items]</span>;
   }
   if (typeof value === 'object') {
-    return <span className="text-gray-500 italic">{`{Object: ${Object.keys(value as object).length} properties}`}</span>;
+    return (
+      <span className="text-gray-500 italic">{`{Object: ${Object.keys(value as object).length} properties}`}</span>
+    );
   }
   return <span>{String(value)}</span>;
 };

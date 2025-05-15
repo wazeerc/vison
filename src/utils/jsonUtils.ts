@@ -4,7 +4,7 @@
 
 // Define recursive types for JSON values using type aliases
 export type JsonValue = string | number | boolean | null | JsonObject | JsonArray;
-export type JsonObject = { [key: string]: JsonValue; };
+export type JsonObject = { [key: string]: JsonValue };
 export type JsonArray = JsonValue[];
 
 /**
@@ -12,7 +12,9 @@ export type JsonArray = JsonValue[];
  * @param jsonString The JSON string to parse
  * @returns Object containing parsed result or error message
  */
-export const parseJson = (jsonString: string): {
+export const parseJson = (
+  jsonString: string
+): {
   data: JsonValue | null; // Use JsonValue type
   error: string | null;
   isArray: boolean;
@@ -28,13 +30,13 @@ export const parseJson = (jsonString: string): {
     return {
       data: parsed,
       error: null,
-      isArray
+      isArray,
     };
   } catch (error) {
     return {
       data: null,
       error: (error as Error).message,
-      isArray: false
+      isArray: false,
     };
   }
 };
@@ -44,7 +46,8 @@ export const parseJson = (jsonString: string): {
  * @param json The JSON object to format
  * @returns Formatted JSON string
  */
-export const formatJson = (json: JsonValue | null): string => { // Use JsonValue type
+export const formatJson = (json: JsonValue | null): string => {
+  // Use JsonValue type
   if (json === null) return '';
 
   return JSON.stringify(json, null, 2);
@@ -60,7 +63,10 @@ export const formatJson = (json: JsonValue | null): string => { // Use JsonValue
 export const flattenJson = (jsonData: JsonValue): Record<string, unknown>[] => {
   if (Array.isArray(jsonData)) {
     // Ensure all elements are objects for table consistency, though this might hide non-object array elements
-    return jsonData.filter(item => typeof item === 'object' && item !== null) as Record<string, unknown>[];
+    return jsonData.filter(item => typeof item === 'object' && item !== null) as Record<
+      string,
+      unknown
+    >[];
   }
   if (typeof jsonData === 'object' && jsonData !== null) {
     return [jsonData as Record<string, unknown>];
@@ -107,7 +113,12 @@ export const updateJsonValue = (
   const newData = JSON.parse(JSON.stringify(jsonData));
 
   if (Array.isArray(newData)) {
-    if (index >= 0 && index < newData.length && typeof newData[index] === 'object' && newData[index] !== null) {
+    if (
+      index >= 0 &&
+      index < newData.length &&
+      typeof newData[index] === 'object' &&
+      newData[index] !== null
+    ) {
       (newData[index] as JsonObject)[key] = value as JsonValue;
     }
     return newData;
@@ -136,7 +147,8 @@ export const getJsonDepth = (value: JsonValue, currentDepth: number = 1): number
     for (const item of value) {
       maxDepth = Math.max(maxDepth, getJsonDepth(item, currentDepth + 1));
     }
-  } else { // It's an object
+  } else {
+    // It's an object
     for (const key in value) {
       if (Object.prototype.hasOwnProperty.call(value, key)) {
         maxDepth = Math.max(maxDepth, getJsonDepth(value[key], currentDepth + 1));
@@ -174,20 +186,26 @@ export const updateNestedJsonValue = (
       const key = path[i];
       // Type guard to ensure current is an indexable type (object or array)
       if (typeof current !== 'object' || current === null) {
-        console.error("Invalid path segment: encountered non-object/array before end:", key, "in path:", path);
+        console.error(
+          'Invalid path segment: encountered non-object/array before end:',
+          key,
+          'in path:',
+          path
+        );
         return data;
       }
 
       // Check if key exists before accessing
       if (Array.isArray(current)) {
         if (typeof key !== 'number' || key < 0 || key >= current.length) {
-          console.error("Invalid array index in path:", key, "in path:", path);
+          console.error('Invalid array index in path:', key, 'in path:', path);
           return data;
         }
         current = current[key];
-      } else { // It's an object
+      } else {
+        // It's an object
         if (typeof key !== 'string' || !Object.prototype.hasOwnProperty.call(current, key)) {
-          console.error("Invalid object key in path:", key, "in path:", path);
+          console.error('Invalid object key in path:', key, 'in path:', path);
           return data;
         }
         current = (current as JsonObject)[key];
@@ -197,29 +215,31 @@ export const updateNestedJsonValue = (
     const finalKey = path[path.length - 1];
     // Final type guard
     if (typeof current !== 'object' || current === null) {
-      console.error("Cannot set property on non-object/array at final step:", path);
+      console.error('Cannot set property on non-object/array at final step:', path);
       return data;
     }
 
     if (Array.isArray(current)) {
-      if (typeof finalKey === 'number' && finalKey >= 0 && finalKey <= current.length) { // Allow inserting at the end
+      if (typeof finalKey === 'number' && finalKey >= 0 && finalKey <= current.length) {
+        // Allow inserting at the end
         current[finalKey] = newValue;
       } else {
-        console.error("Invalid final array index for update:", finalKey, "in path:", path);
+        console.error('Invalid final array index for update:', finalKey, 'in path:', path);
         return data;
       }
-    } else { // It's an object
+    } else {
+      // It's an object
       if (typeof finalKey === 'string') {
         (current as JsonObject)[finalKey] = newValue;
       } else {
-        console.error("Invalid final object key for update:", finalKey, "in path:", path);
+        console.error('Invalid final object key for update:', finalKey, 'in path:', path);
         return data;
       }
     }
 
     return newData;
   } catch (error) {
-    console.error("Error updating nested JSON value:", error, path, newValue);
+    console.error('Error updating nested JSON value:', error, path, newValue);
     return data;
   }
 };

@@ -56,10 +56,12 @@
 
   body {
     @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
     @apply font-inter;
     @apply antialiased;
-    background-color: #F1F0FB;
+    background-color: #f1f0fb;
     /* Vison BG */
   }
 

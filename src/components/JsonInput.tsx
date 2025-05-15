@@ -1,4 +1,3 @@
-
 import { RotateCcw } from 'lucide-react';
 import React, { useRef, useState } from 'react';
 import { toast } from 'sonner';
@@ -31,7 +30,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
     }
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = event => {
       const content = event.target?.result as string;
       try {
         const result = parseJson(content);
@@ -44,6 +43,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
         toast.success('JSON file loaded successfully!');
       } catch (error) {
         toast.error('Failed to parse JSON file');
+        console.error('Error parsing JSON file:', error);
       }
     };
     reader.readAsText(file);
@@ -71,7 +71,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
     }
 
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = event => {
       const content = event.target?.result as string;
       try {
         const result = parseJson(content);
@@ -84,6 +84,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
         toast.success('JSON file loaded successfully!');
       } catch (error) {
         toast.error('Failed to parse JSON file');
+        console.error('Error parsing JSON file:', error);
       }
     };
     reader.readAsText(file);
@@ -105,7 +106,9 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
 
       <div
         className={`p-4 mb-4 border-2 border-dashed rounded-xl transition-colors ${
-          isDragging ? 'bg-vison-purple/20 border-vison-purple-dark' : 'border-gray-200 hover:border-vison-purple'
+          isDragging
+            ? 'bg-vison-purple/20 border-vison-purple-dark'
+            : 'border-gray-200 hover:border-vison-purple'
         }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}

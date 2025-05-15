@@ -13,7 +13,10 @@ const Header: React.FC = () => {
         <span className="relative inline-block px-[8px] py-[3px] text-xs font-semibold text-vison-purple bg-gradient-to-br from-vison-peach/70 to-vison-blue/30 rounded-full shadow-soft-sm border border-vison-purple/20 -translate-y-2 overflow-hidden">
           Beta
           {/* Shine effect */}
-            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shine" style={{ backgroundSize: '200% 100%', animationDuration: '5s' }}></span>
+          <span
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/70 to-transparent animate-shine"
+            style={{ backgroundSize: '200% 100%', animationDuration: '5s' }}
+          ></span>
           {/* Inner glow (optional) */}
         </span>
       </div>
