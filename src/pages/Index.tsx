@@ -66,6 +66,9 @@ const Index: React.FC = () => {
     setJsonString(formatJson(updatedData));
   };
 
+  // 🚧 WIP: Share feature
+  const handleShare = ():boolean => false;
+
   // Export JSON to file
   const handleDownload = () => {
     if (!parsedData) {
@@ -186,21 +189,32 @@ const Index: React.FC = () => {
           )}
 
           {parsedData && (
-            <div className="flex justify-end mt-6 gap-3 animate-fade-in">
-              {/* Copy Button */}
-              <button
-                onClick={handleCopy}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-medium transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98]"
-              >
-                <CopyIcon className="w-5 h-5" />
-              </button>
-              {/* Download Button */}
-              <button
-                onClick={handleDownload}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
-              >
-                <DownloadIcon className="w-5 h-5" />
-              </button>
+            <div>
+              <div className="flex justify-between flex-row mt-6 animate-fade-in">
+                <button
+                  disabled={!handleShare()}
+                  onClick={handleShare}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white text-base font-inter font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                🚧 Share
+                </button>
+                {/* Copy Button */}
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleCopy}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-medium transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98]"
+                  >
+                    <CopyIcon className="w-5 h-5" />
+                  </button>
+                  {/* Download Button */}
+                  <button
+                    onClick={handleDownload}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
+                  >
+                    <DownloadIcon className="w-5 h-5" />
+                  </button>
+                </div>
+            </div>
             </div>
           )}
         </main>
