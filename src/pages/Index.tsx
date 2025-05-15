@@ -66,7 +66,7 @@ const Index: React.FC = () => {
     setJsonString(formatJson(updatedData));
   };
 
-  // 🚧 WIP: Share feature
+  // 🚧 WIP: Share feature - https://github.com/wazeerc/vison/issues/4
   const handleShare = ():boolean => false;
 
   // Export JSON to file
