@@ -350,26 +350,34 @@ const TreeNode: React.FC<TreeNodeProps> = ({
         {/* Added whitespace-nowrap */}
         {/* Value / Edit Input */}
         {isCurrentlyEditing ? (
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => onEditSubmit(path, convertValueType(editValue))}
-            className="ml-1 text-green-600 hover:bg-green-100 flex-shrink-0 edit-control-button h-6 w-6"
-+           aria-label="Save changes"
-          >
-            {' '}
-            <Check size={14} />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={cancelEdit}
-            className="ml-0.5 text-red-600 hover:bg-red-100 flex-shrink-0 edit-control-button h-6 w-6"
-+           aria-label="Cancel editing"
-          >
-            {' '}
-            <X size={14} />
-          </Button>
+          <div className="flex items-center">
+            <Input
+              type="text"
+              value={editValue}
+              onChange={handleEditChange}
+              onKeyDown={handleKeyDown}
+              onBlur={handleBlur}
+              autoFocus
+              className="mr-1 px-1 py-0 h-6 min-w-[80px] max-w-[200px] text-sm"
+            />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => onEditSubmit(path, convertValueType(editValue))}
+              className="ml-1 text-green-600 hover:bg-green-100 flex-shrink-0 edit-control-button h-6 w-6"
+              aria-label="Save changes"
+            >
+              <Check size={14} />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={cancelEdit}
+              className="ml-0.5 text-red-600 hover:bg-red-100 flex-shrink-0 edit-control-button h-6 w-6"
+              aria-label="Cancel editing"
+            >
+              <X size={14} />
+            </Button>
           </div>
         ) : (
           <span
