@@ -43,7 +43,11 @@ const SharedData: React.FC = () => {
         }
 
         // Parse and initialize data
-        const parsed = parseJson(JSON.stringify(data.data));
+        const parsed = {
+          data: data.data,
+          isArray: Array.isArray(data.data),
+          error: null
+        };
         setOriginalData(parsed.data);
         setJsonData(parsed.data);
         setIsArray(parsed.isArray);
