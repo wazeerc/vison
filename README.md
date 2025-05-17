@@ -1,10 +1,10 @@
 # Vison
 
-Vison - Visualize JSON: The Smarter Way to View and Edit JSON
+Vison - Visualize JSON: The Smarter Way to View, Edit, and Share JSON
 
 ## About
 
-Vison is a web application designed to help non-technical individuals easily view and edit JSON data through an intuitive interface.
+Vison is a web application designed to help both technical and non-technical users easily view, edit, and collaborate on JSON data through an intuitive interface.
 
 This application was initially vibe coded on [Lovable](https://lovable.dev/) and further fine-tuned in VSCode Agent Mode using Gemini 2.5 Pro.
 
@@ -12,12 +12,13 @@ This application was initially vibe coded on [Lovable](https://lovable.dev/) and
 
 ## Purpose
 
-The primary goal of Vison is to simplify the process of interacting with JSON data, making it accessible even if you're not familiar with the technical details of the format.
+The primary goal of Vison is to simplify the process of interacting with JSON data, making it accessible even if you're not familiar with the technical details of the format, while providing collaboration features for teams.
 
 ## Requirements
 
 - [Node.js](https://nodejs.org/) (LTS version recommended)
 - [npm](https://www.npmjs.com/) (comes with Node.js) or [yarn](https://yarnpkg.com/) or [pnpm](https://pnpm.io/)
+- [Supabase](https://supabase.com/) account (for share feature)
 
 ### Stack
 
@@ -26,44 +27,12 @@ The primary goal of Vison is to simplify the process of interacting with JSON da
 - React
 - shadcn-ui
 - Tailwind CSS
+- Supabase (for data persistence)
 
-## Usage
+## Environment Variables
 
-1. **Clone the repository:**
+Create a `.env` file in the root directory with:
 
-    ```bash
-    git clone https://github.com/wazeerc/vison.git
-    cd vison
-    ```
-
-2. **Install dependencies:**
-
-    ```bash
-    npm install
-    # or
-    # yarn install
-    # or
-    # pnpm install
-    ```
-
-3. **Run the development server:**
-
-    ```bash
-    npm run dev
-    ```
-
-    The application will be available at `http://localhost:8080` (or another port if 8080 is busy).
-
-## How to Use Vison (Guides)
-
-1. **Input JSON:** Paste your JSON data directly into the text area or drag and drop a `.json` file onto the input area.
-2. **View Data:** Vison automatically parses the JSON and displays it in a user-friendly table view. For complex, deeply nested JSON (depth >= 4), it automatically switches to a tree view. You can manually toggle between table and tree views using the buttons provided.
-3. **Edit Data:**
-    - **Table View:** Double-click on values within the table cells to edit them directly. Press Enter or click outside the cell to save the change.
-    - **Tree View:** Editing in the tree view might be limited depending on the implementation.
-4. **Download:** Once you're done editing, click the download icon button to save the modified JSON data as `vison-export.json`.
-5. **Copy:** Click the copy icon button to copy the current, formatted JSON to your clipboard.
-
-## Contributing
-
-Found a bug or have a feature request? Please check the [issues page](https://github.com/wazeerc/vison/issues) or open a new one. Pull requests are also welcome!
+```env
+VITE_SUPABASE_URL=your-supabase-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key 
