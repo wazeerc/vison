@@ -183,3 +183,53 @@ export const JsonIcon: React.FC<{ className?: string }> = ({ className }) => {
     </svg>
   );
 };
+
+export const VisonLogo: React.FC<{ className?: string }> = ({ className }) => {
+  return (
+    <svg
+      width="512"
+      height="512"
+      viewBox="0 0 512 512"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      className={className}
+    >
+      <rect
+        id="r9"
+        width="512"
+        height="512"
+        x="0"
+        y="0"
+        rx="0"
+        fill="#FFFFFF"
+        stroke="#FFFFFF"
+        strokeWidth="0"
+        strokeOpacity="100%"
+        paintOrder="stroke"
+      />
+      <clipPath id="clip">
+        <use xlinkHref="#r9" />
+      </clipPath>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 16 16"
+        width="500"
+        height="500"
+        x="6"
+        y="6"
+        alignmentBaseline="middle"
+        style={{ color: 'rgb(155, 135, 245)' }}
+      >
+        <path
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.5"
+          d="M3.25 2.75 1.75 4l1.5 1.25m3.5-2.5L8.25 4l-1.5 1.25m-5 3.5v3.5a2 2 0 0 0 2 2h8.5a2 2 0 0 0 2-2v-8.5a2 2 0 0 0-2-2h-.5"
+        ></path>
+      </svg>
+    </svg>
+  );
+};

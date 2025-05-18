@@ -281,7 +281,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
       return <span className="text-gray-500 italic">null</span>;
     }
     if (typeof value === 'string') {
-      return <span className="text-purple-800">"{value}"</span>; // Removed break-all
+      return <span className="text-purple-800 text-wrap">"{value}"</span>; // Removed break-all
     }
     if (typeof value === 'number') {
       return <span className="text-blue-600">{value}</span>;
