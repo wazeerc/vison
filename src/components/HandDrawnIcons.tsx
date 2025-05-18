@@ -224,9 +224,9 @@ export const VisonLogo: React.FC<{ className?: string }> = ({ className }) => {
       >
         <path
           stroke="currentColor"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="1.5"
           d="M3.25 2.75 1.75 4l1.5 1.25m3.5-2.5L8.25 4l-1.5 1.25m-5 3.5v3.5a2 2 0 0 0 2 2h8.5a2 2 0 0 0 2-2v-8.5a2 2 0 0 0-2-2h-.5"
         ></path>
       </svg>
