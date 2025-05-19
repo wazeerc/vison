@@ -151,7 +151,8 @@ const JsonTreeView: React.FC<JsonTreeViewProps> = ({ jsonData, onDataChange }) =
 
   const startEdit = (path: Path, currentValue: JsonValue) => {
     setEditingPath(path);
-    setEditValue(String(currentValue ?? '')); // Handle null/undefined
+    const stringValue = currentValue === null ? 'null' : String(currentValue ?? '');
+    setEditValue(stringValue);
   };
 
   const cancelEdit = () => {
@@ -318,6 +319,13 @@ const TreeNode: React.FC<TreeNodeProps> = ({
     }
     onEditSubmit(path, convertValueType(editValue)); // Submit on blur otherwise
   };
+  const getInputWidth = () => {
+    const valueLength = String(editValue).length;
+    const contentType = typeof nodeValue;
+    const extraPadding = contentType === 'string' ? 40 : 20;
+
+    return Math.max(100, valueLength * 9 + extraPadding) + 'px';
+  };
 
   return (
     <div style={{ paddingLeft: `${indent}px` }}>
@@ -358,7 +366,9 @@ const TreeNode: React.FC<TreeNodeProps> = ({
               onKeyDown={handleKeyDown}
               onBlur={handleBlur}
               autoFocus
-              className="mr-1 px-1 py-0 h-6 min-w-[80px] max-w-[200px] text-sm"
+              className="mr-1 px-1 py-0 h-6 text-sm"
+              style={{ width: getInputWidth() }}
+              onFocus={e => e.target.select()}
             />
             <Button
               variant="ghost"
