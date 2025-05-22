@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Footer from '../components/Footer';
@@ -26,7 +26,7 @@ const Index: React.FC = () => {
   // Use JsonValue for better typing, though top level could be object or array
   const [parsedData, setParsedData] = useState<JsonValue | null>(null);
   const [isArray, setIsArray] = useState<boolean>(false);
-  const [, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
   const [currentView, setCurrentView] = useState<ViewMode>('table'); // State for current view
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [displayedView, setDisplayedView] = useState<ViewMode>('table'); // What's actually shown
@@ -44,58 +44,64 @@ const Index: React.FC = () => {
   }` as string; // Sample JSON for initial load
 
   // Handle view transition with animation
-  const handleViewChange = (newView: ViewMode) => {
-    if (currentView === newView || isTransitioning) return;
+  const handleViewChange = useCallback(
+    (newView: ViewMode) => {
+      if (currentView === newView || isTransitioning) return;
 
-    setIsTransitioning(true);
+      setIsTransitioning(true);
 
-    // First update the button state immediately for feedback
-    setCurrentView(newView);
+      // First update the button state immediately for feedback
+      setCurrentView(newView);
 
-    // Small delay to allow CSS transitions to take effect
-    setTimeout(() => {
-      setDisplayedView(newView);
-      setIsTransitioning(false);
-    }, 300); // Match this with the CSS transition duration
-  };
+      // Small delay to allow CSS transitions to take effect
+      setTimeout(() => {
+        setDisplayedView(newView);
+        setIsTransitioning(false);
+      }, 300); // Match this with the CSS transition duration
+    },
+    [currentView, isTransitioning, setCurrentView, setDisplayedView, setIsTransitioning]
+  );
 
   // Process JSON input
-  const handleJsonChange = (json: string) => {
-    setJsonString(json);
-    if (!json.trim()) {
-      setParsedData(null);
-      setError(null);
-      setIsArray(false); // Reset isArray
-      handleViewChange('table'); // Reset view
-      return;
-    }
+  const handleJsonChange = useCallback(
+    (json: string) => {
+      setJsonString(json);
+      if (!json.trim()) {
+        setParsedData(null);
+        setError(null);
+        setIsArray(false); // Reset isArray
+        handleViewChange('table'); // Reset view
+        return;
+      }
 
-    const result = parseJson(json);
-    setParsedData(result.data);
-    setError(result.error);
-    setIsArray(result.isArray);
-    if (result.error) {
-      toast.error(`JSON Parse Error: ${result.error}`);
-      handleViewChange('table'); // Reset view on error
-    } else if (result.data) {
-      // Check complexity and switch view if needed
-      const depth = getJsonDepth(result.data);
-      if (depth >= COMPLEXITY_DEPTH_THRESHOLD) {
-        // Only switch automatically if the current view isn't already tree (to respect manual selection)
-        if (currentView !== 'tree') {
-          handleViewChange('tree');
-          toast.info('Switched to Tree View due to JSON complexity.');
+      const result = parseJson(json);
+      setParsedData(result.data);
+      setError(result.error);
+      setIsArray(result.isArray);
+      if (result.error) {
+        toast.error(`JSON Parse Error: ${result.error}`);
+        handleViewChange('table'); // Reset view on error
+      } else if (result.data) {
+        // Check complexity and switch view if needed
+        const depth = getJsonDepth(result.data);
+        if (depth >= COMPLEXITY_DEPTH_THRESHOLD) {
+          // Only switch automatically if the current view isn't already tree (to respect manual selection)
+          if (currentView !== 'tree') {
+            handleViewChange('tree');
+            toast.info('Switched to Tree View due to JSON complexity.');
+          }
+        } else {
+          // Default to table view if not complex, unless user manually switched to tree
+          if (currentView !== 'tree') {
+            handleViewChange('table');
+          }
         }
       } else {
-        // Default to table view if not complex, unless user manually switched to tree
-        if (currentView !== 'tree') {
-          handleViewChange('table');
-        }
+        handleViewChange('table'); // Reset if no data
       }
-    } else {
-      handleViewChange('table'); // Reset if no data
-    }
-  };
+    },
+    [setJsonString, setParsedData, setError, setIsArray, handleViewChange, currentView]
+  ); // Removed toast from dependencies
 
   // Handle data changes from table/tree edits
   const handleDataChange = (updatedData: JsonValue) => {
@@ -234,14 +240,11 @@ const Index: React.FC = () => {
     } else {
       // Only set sample data if no JSON has been entered yet
       if (!jsonString) {
-        setJsonString(sampleJson);
-        const result = parseJson(sampleJson);
-        setParsedData(result.data);
-        setIsArray(result.isArray);
+        handleJsonChange(sampleJson); // Use handleJsonChange to set initial sample
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shareId]);
+  }, [shareId, sampleJson, handleJsonChange]); // Added sampleJson and handleJsonChange to deps
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-vison-bg">

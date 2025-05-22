@@ -24,11 +24,15 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
     onJsonChange(value);
   };
 
-  // Update state if initialValue changes (for Share page)
+  // Update state if initialValue changes (for Share page or initial load)
   React.useEffect(() => {
-    setJsonText(initialValue);
-    onJsonChange(initialValue);
-  }, [initialValue, onJsonChange]);
+    if (initialValue !== jsonText) {
+      setJsonText(initialValue);
+      if (initialValue !== jsonText) {
+        onJsonChange(initialValue);
+      }
+    }
+  }, [initialValue, onJsonChange, jsonText]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
