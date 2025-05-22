@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import Footer from '../components/Footer';
 import { CopyIcon, DownloadIcon, TableViewIcon, TreeViewIcon } from '../components/HandDrawnIcons'; // Added CopyIcon, TableViewIcon, TreeViewIcon
@@ -13,6 +14,9 @@ type ViewMode = 'table' | 'tree';
 const COMPLEXITY_DEPTH_THRESHOLD = 4; // Switch to tree view if depth is 4 or more
 
 const Index: React.FC = () => {
+  // Check for share id in URL
+  const params = useParams<{ id?: string }>();
+  const shareId = params.id;
   const [jsonString, setJsonString] = useState<string>('');
   // Use JsonValue for better typing, though top level could be object or array
   const [parsedData, setParsedData] = useState<JsonValue | null>(null);
@@ -21,6 +25,18 @@ const Index: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewMode>('table'); // State for current view
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [displayedView, setDisplayedView] = useState<ViewMode>('table'); // What's actually shown
+
+  const sampleJson = `{
+    "name": "Vison Example",
+    "version": "1.0.0",
+    "active": true,
+    "description": "A sample JSON for demonstrating Vison",
+    "features": ["Easy editing", "Table view", "Real-time updates"],
+    "stats": {
+      "users": 1250,
+      "rating": 4.8
+    }
+  }` as string; // Sample JSON for initial load
 
   // Handle view transition with animation
   const handleViewChange = (newView: ViewMode) => {
@@ -83,8 +99,43 @@ const Index: React.FC = () => {
     setJsonString(formatJson(updatedData));
   };
 
-  // 🚧 WIP: Share feature - https://github.com/wazeerc/vison/issues/4
-  const handleShare = (): boolean => false;
+  // Share feature using Supabase
+  const [shareLink, setShareLink] = useState<string | null>(null);
+  const [isSharing, setIsSharing] = useState(false);
+
+  const handleShare = async () => {
+    if (!parsedData) {
+      toast.error('No valid JSON to share');
+      return;
+    }
+    try {
+      const { data, error } = await import('../lib/supabaseClient').then(({ supabase }) =>
+        supabase
+          .from('shared_json')
+          .insert([{ json: parsedData }])
+          .select('id')
+          .single()
+      );
+      if (error || !data?.id) {
+        throw error || new Error('Failed to create shareable link');
+      }
+      const url = `${window.location.origin}/share/${data.id}`;
+      setShareLink(url);
+      await navigator.clipboard.writeText(url);
+      toast.success(
+        <span className="text-sm font-medium">
+          Shareable Vison link copied to clipboard!
+          <br />
+          Anyone with this link can access your JSON data.
+        </span>
+      );
+    } catch (err) {
+      toast.error('Failed to create share link');
+      console.error(err);
+    } finally {
+      setIsSharing(false);
+    }
+  };
 
   // Export JSON to file
   const handleDownload = () => {
@@ -129,27 +180,44 @@ const Index: React.FC = () => {
 
   // Provide some sample data for first-time users
   useEffect(() => {
-    const sampleJson = `{
-  "name": "Vison Example",
-  "version": "1.0.0",
-  "active": true,
-  "description": "A sample JSON for demonstrating Vison",
-  "features": ["Easy editing", "Table view", "Real-time updates"],
-  "stats": {
-    "users": 1250,
-    "rating": 4.8
-  }
-}`;
-
-    // Only set sample data if no JSON has been entered yet
-    if (!jsonString) {
-      setJsonString(sampleJson);
-      const result = parseJson(sampleJson);
-      setParsedData(result.data);
-      setIsArray(result.isArray);
+    // If on /share/:id, fetch shared JSON from Supabase
+    if (shareId) {
+      import('../lib/supabaseClient').then(({ supabase }) => {
+        supabase
+          .from('shared_json')
+          .select('json,created_at')
+          .eq('id', shareId)
+          .single()
+          .then(({ data, error }) => {
+            if (error || !data) {
+              toast.error('Invalid or expired share link.');
+              return;
+            }
+            // Check expiry (15 minutes)
+            const created = new Date(data.created_at);
+            const now = new Date();
+            const diff = (now.getTime() - created.getTime()) / 1000 / 60;
+            if (diff > 15) {
+              toast.error('This Vison link has expired.');
+              return;
+            }
+            setParsedData(data.json);
+            setJsonString(formatJson(data.json));
+            setIsArray(Array.isArray(data.json));
+            toast.info('You are viewing a shared JSON file.');
+          });
+      });
+    } else {
+      // Only set sample data if no JSON has been entered yet
+      if (!jsonString) {
+        setJsonString(sampleJson);
+        const result = parseJson(sampleJson);
+        setParsedData(result.data);
+        setIsArray(result.isArray);
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Intentionally empty dependency array to run only once if jsonString is initially empty
+  }, [shareId]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-vison-bg">
@@ -211,17 +279,14 @@ const Index: React.FC = () => {
           </div>
           {parsedData && (
             <div className="flex justify-between items-center">
-              <button>
-                {/* Share Button */}
-                <button
-                  disabled={!handleShare()}
-                  onClick={handleShare}
-                  aria-label="Share JSON"
-                  title="This feature is coming soon!"
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-semibold transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  🚧 Share
-                </button>
+              {/* Share Button */}
+              <button
+                disabled={isSharing || jsonString === sampleJson}
+                onClick={handleShare}
+                aria-label="Share JSON"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-semibold transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Share
               </button>
               <div>
                 {/* Copy Button */}
