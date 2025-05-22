@@ -105,6 +105,8 @@ To use the Secure Share feature, you need a free [Supabase](https://supabase.com
    DELETE FROM shared_json WHERE created_at < NOW() - INTERVAL '15 minutes';
    ```
 
+   Note: In the current implementation, the Supabase table is cleared every 24 hours using a cron job which invokes an [Edge Function](https://supabase.com/docs/guides/functions).
+
 5. Start the app and enjoy secure sharing!
 
 ## Contributing
