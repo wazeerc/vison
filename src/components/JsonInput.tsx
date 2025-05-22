@@ -7,10 +7,11 @@ import { Textarea } from './ui/textarea';
 
 interface JsonInputProps {
   onJsonChange: (json: string) => void;
+  initialValue?: string;
 }
 
-const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
-  const [jsonText, setJsonText] = useState('');
+const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }) => {
+  const [jsonText, setJsonText] = useState(initialValue);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -19,6 +20,12 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange }) => {
     setJsonText(value);
     onJsonChange(value);
   };
+
+  // Update state if initialValue changes (for Share page)
+  React.useEffect(() => {
+    setJsonText(initialValue);
+    onJsonChange(initialValue);
+  }, [initialValue, onJsonChange]);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
