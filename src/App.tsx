@@ -10,8 +10,6 @@ import NotFound from './pages/NotFound';
 
 const queryClient = new QueryClient();
 
-document.getElementById('lovable-badge')?.remove();
-
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
