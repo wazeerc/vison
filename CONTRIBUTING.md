@@ -3,7 +3,9 @@
 When contributing to this repository, please first discuss the change you wish to make via issue,
 email, or any other method with the owners of this repository before making a change. 
 
-Please note we have a code of conduct, please follow it in all your interactions with the project.
+Please note we have a code of conduct, please follow it in all your interactions with the project.}
+
+We expect Contributors to be pro-active and reply to conversations in the PR thread. Failure do to so might result in PRs being closed.
 
 ## Pull Request Process
 
