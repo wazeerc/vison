@@ -141,13 +141,8 @@ const Index: React.FC = () => {
       const url = `${window.location.origin}/share/${data.id}#${exportedKey}`;
       setShareLink(url);
       await navigator.clipboard.writeText(url);
-      toast.success(
-        <span className="text-sm font-medium">
-          Shareable Vison link copied to clipboard!
-          <br />
-          Anyone with this link can access your JSON data.
-        </span>
-      );
+      toast.info('Anyone with this link can access your JSON data, it will expire in 15 minutes.');
+      toast.success('Shareable Vison link copied to your clipboard!');
     } catch (err) {
       toast.error('Failed to create share link');
       console.error(err);
