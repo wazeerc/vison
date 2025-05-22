@@ -28,9 +28,23 @@ export async function encryptJson(
   };
 }
 
-export async function decryptJson(ciphertext: string, iv: string, key: CryptoKey): Promise<any> {
-  const ct = Uint8Array.from(atob(ciphertext), c => c.charCodeAt(0));
-  const ivBytes = Uint8Array.from(atob(iv), c => c.charCodeAt(0));
-  const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: ivBytes }, key, ct);
-  return JSON.parse(new TextDecoder().decode(decrypted));
+export async function decryptJson<T = any>(
+  ciphertext: string,
+  iv: string,
+  key: CryptoKey
+): Promise<T> {
+  try {
+    const ct = Uint8Array.from(atob(ciphertext), c => c.charCodeAt(0));
+    const ivBytes = Uint8Array.from(atob(iv), c => c.charCodeAt(0));
+    const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: ivBytes }, key, ct);
+    return JSON.parse(new TextDecoder().decode(decrypted)) as T;
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'OperationError') {
+      throw new Error('Decryption failed: Invalid key or corrupted data');
+    } else if (error instanceof SyntaxError) {
+      throw new Error('Decryption failed: Invalid JSON data');
+    }
+    console.error('Decryption failed:', error);
+    throw new Error('Failed to decrypt data');
+  }
 }

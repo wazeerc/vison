@@ -6,7 +6,9 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || process.env.SUPABASE_U
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_KEY || process.env.SUPABASE_KEY;
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  alert(`Something went wrong, don't worry we're working on a fix.`);
+  if (typeof window !== 'undefined' && 'alert' in window) {
+    window.alert('Supabase credentials are missing – please check .env');
+  }
   throw new Error('Supabase credentials are missing.');
 }
 

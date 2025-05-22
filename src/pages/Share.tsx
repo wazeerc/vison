@@ -29,7 +29,7 @@ const SharePage: React.FC = () => {
         .select('json,created_at')
         .eq('id', id)
         .single()
-        .then(({ data, error }) => {
+        .then(async ({ data, error }) => {
           setLoading(false);
           if (error || !data) {
             setError('Invalid or expired share link.');
@@ -44,9 +44,25 @@ const SharePage: React.FC = () => {
             setError('This Vison link has expired.');
             return;
           }
-          setParsedData(data.json);
-          setJsonString(formatJson(data.json));
-          setIsArray(Array.isArray(data.json));
+          const keyStr = window.location.hash.replace(/^#/, '');
+          if (!keyStr) {
+            setError('Missing decryption key in link.');
+            return;
+          }
+
+          try {
+            const { importKey, decryptJson } = await import('../utils/cryptoUtils');
+            const key = await importKey(keyStr);
+            const decrypted = await decryptJson(data.json.ciphertext, data.json.iv, key);
+
+            setParsedData(decrypted);
+            setJsonString(formatJson(decrypted));
+            setIsArray(Array.isArray(decrypted));
+          } catch (e) {
+            console.error(e);
+            setError('Failed to decrypt shared JSON.');
+            return;
+          }
           toast.info('You are viewing a shared JSON file.');
         });
     });
