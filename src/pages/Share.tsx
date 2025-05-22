@@ -6,7 +6,7 @@ import Header from '../components/Header';
 import JsonInput from '../components/JsonInput';
 import JsonTable from '../components/JsonTable';
 import JsonTreeView from '../components/JsonTreeView';
-import { formatJson, getJsonDepth, JsonValue, parseJson } from '../utils/jsonUtils';
+import { formatJson, JsonValue, parseJson } from '../utils/jsonUtils';
 
 const EXPIRY_MINUTES = 15;
 
@@ -17,7 +17,7 @@ const SharePage: React.FC = () => {
   const [parsedData, setParsedData] = useState<JsonValue | null>(null);
   const [isArray, setIsArray] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [expired, setExpired] = useState(false);
+  const [, setExpired] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -55,8 +55,8 @@ const SharePage: React.FC = () => {
             const key = await importKey(keyStr);
             const decrypted = await decryptJson(data.json.ciphertext, data.json.iv, key);
 
-            setParsedData(decrypted);
-            setJsonString(formatJson(decrypted));
+            setParsedData(decrypted as JsonValue);
+            setJsonString(formatJson(decrypted as JsonValue));
             setIsArray(Array.isArray(decrypted));
           } catch (e) {
             console.error(e);

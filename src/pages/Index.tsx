@@ -1,6 +1,6 @@
 import { decryptJson, importKey } from '@/utils/cryptoUtils';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import Footer from '../components/Footer';
 import { CopyIcon, DownloadIcon, TableViewIcon, TreeViewIcon } from '../components/HandDrawnIcons'; // Added CopyIcon, TableViewIcon, TreeViewIcon
@@ -102,7 +102,7 @@ const Index: React.FC = () => {
   };
 
   // Share feature using Supabase
-  const [shareLink, setShareLink] = useState<string | null>(null);
+  const [, setShareLink] = useState<string | null>(null);
   const [isSharing, setIsSharing] = useState(false);
 
   const handleShare = async () => {
@@ -219,10 +219,11 @@ const Index: React.FC = () => {
         try {
           const key = await importKey(keyHash);
           const decrypted = await decryptJson(data.json.ciphertext, data.json.iv, key);
-          setParsedData(decrypted);
-          setJsonString(formatJson(decrypted));
+          setParsedData(decrypted as JsonValue);
+          setJsonString(formatJson(decrypted as JsonValue));
           setIsArray(Array.isArray(decrypted));
           toast.info('You are viewing a shared JSON file.');
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (e) {
           toast.error('Failed to decrypt shared JSON.');
         }

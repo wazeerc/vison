@@ -16,7 +16,7 @@ export async function importKey(base64: string): Promise<CryptoKey> {
 }
 
 export async function encryptJson(
-  json: any,
+  json: unknown,
   key: CryptoKey
 ): Promise<{ ciphertext: string; iv: string }> {
   const iv = crypto.getRandomValues(new Uint8Array(12));
@@ -28,7 +28,7 @@ export async function encryptJson(
   };
 }
 
-export async function decryptJson<T = any>(
+export async function decryptJson<T = unknown>(
   ciphertext: string,
   iv: string,
   key: CryptoKey
