@@ -1,20 +1,43 @@
 // src/utils/cryptoUtils.ts
-// Utility functions for encrypting and decrypting JSON using Web Crypto API (AES-GCM)
+/**
+ * Asynchronously generates a 256-bit AES-GCM cryptographic key for encryption and decryption.
+ *
+ * @returns A {@link CryptoKey} object usable with AES-GCM operations.
+ */
 
 export async function generateKey(): Promise<CryptoKey> {
   return crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']);
 }
 
+/**
+ * Exports a CryptoKey as a base64-encoded string.
+ *
+ * Converts the provided AES-GCM key to raw binary format and encodes it for storage or transmission.
+ *
+ * @returns The base64-encoded representation of the key.
+ */
 export async function exportKey(key: CryptoKey): Promise<string> {
   const raw = await crypto.subtle.exportKey('raw', key);
   return btoa(String.fromCharCode(...new Uint8Array(raw)));
 }
 
+/**
+ * Imports a base64-encoded AES-GCM key and returns it as a CryptoKey object.
+ *
+ * @param base64 - The base64-encoded raw key string to import.
+ * @returns A Promise that resolves to a CryptoKey usable for AES-GCM encryption and decryption.
+ */
 export async function importKey(base64: string): Promise<CryptoKey> {
   const raw = Uint8Array.from(atob(base64), c => c.charCodeAt(0));
   return crypto.subtle.importKey('raw', raw, 'AES-GCM', true, ['encrypt', 'decrypt']);
 }
 
+/**
+ * Encrypts a JSON-serializable value using AES-GCM and returns base64-encoded ciphertext and IV.
+ *
+ * @param json - The value to serialize and encrypt.
+ * @returns An object containing the base64-encoded ciphertext and initialization vector.
+ */
 export async function encryptJson(
   json: unknown,
   key: CryptoKey
@@ -28,6 +51,18 @@ export async function encryptJson(
   };
 }
 
+/**
+ * Decrypts base64-encoded ciphertext and IV using AES-GCM and parses the result as JSON.
+ *
+ * @param ciphertext - The base64-encoded ciphertext to decrypt.
+ * @param iv - The base64-encoded initialization vector used during encryption.
+ * @param key - The AES-GCM {@link CryptoKey} for decryption.
+ * @returns The decrypted and parsed JSON object.
+ *
+ * @throws {Error} If the key is invalid or the ciphertext/IV is corrupted.
+ * @throws {Error} If the decrypted data is not valid JSON.
+ * @throws {Error} If decryption fails for any other reason.
+ */
 export async function decryptJson<T = unknown>(
   ciphertext: string,
   iv: string,
