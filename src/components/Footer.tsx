@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
               Vison - Visualize JSON
             </h3>
             <p className="mt-1 text-sm text-vison-charcoal/70 font-nunito">
-              The Smarter Way to View and Edit JSON
+              The Smarter Way to View, Edit, and Securely Share JSON
             </p>
           </div>
           <div className="flex flex-col items-center sm:items-end gap-2 text-xs text-vison-charcoal/60 font-nunito">

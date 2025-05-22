@@ -21,7 +21,7 @@ const Header: React.FC = () => {
         </span>
       </div>
       <p className="mt-2 text-center text-vison-charcoal/80 max-w-md mx-auto font-nunito">
-        Effortlessly View, Edit, and Transform JSON Data
+        Effortlessly View, Edit, and Share JSON Data
       </p>
     </header>
   );
