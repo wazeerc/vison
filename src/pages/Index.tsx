@@ -118,13 +118,11 @@ const Index: React.FC = () => {
       // 2. Encrypt the JSON
       const { ciphertext, iv } = await encryptJson(parsedData, key);
       // 3. Store ciphertext and iv in Supabase
-      const { data, error } = await import('../lib/supabaseClient').then(({ supabase }) =>
-        supabase
-          .from('shared_json')
-          .insert([{ json: { ciphertext, iv } }])
-          .select('id')
-          .single()
-      );
+      const { data, error } = await supabase
+        .from('shared_json')
+        .insert([{ json: { ciphertext, iv } }])
+        .select('id')
+        .single();
       if (error || !data?.id) {
         throw error || new Error('Failed to create shareable link');
       }
