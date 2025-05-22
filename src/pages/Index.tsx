@@ -1,3 +1,4 @@
+import { decryptJson, importKey } from '@/utils/cryptoUtils';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -7,6 +8,7 @@ import Header from '../components/Header';
 import JsonInput from '../components/JsonInput';
 import JsonTable from '../components/JsonTable';
 import JsonTreeView from '../components/JsonTreeView'; // Import the new Tree View component
+import { encryptJson, exportKey, generateKey } from '../utils/cryptoUtils';
 import { formatJson, getJsonDepth, JsonValue, parseJson } from '../utils/jsonUtils'; // Import JsonValue type and getJsonDepth
 
 // Define view types
@@ -108,18 +110,26 @@ const Index: React.FC = () => {
       toast.error('No valid JSON to share');
       return;
     }
+    setIsSharing(true);
     try {
+      // 1. Generate a key
+      const key = await generateKey();
+      const exportedKey = await exportKey(key);
+      // 2. Encrypt the JSON
+      const { ciphertext, iv } = await encryptJson(parsedData, key);
+      // 3. Store ciphertext and iv in Supabase
       const { data, error } = await import('../lib/supabaseClient').then(({ supabase }) =>
         supabase
           .from('shared_json')
-          .insert([{ json: parsedData }])
+          .insert([{ json: { ciphertext, iv } }])
           .select('id')
           .single()
       );
       if (error || !data?.id) {
         throw error || new Error('Failed to create shareable link');
       }
-      const url = `${window.location.origin}/share/${data.id}`;
+      // 4. Share link contains both id and key
+      const url = `${window.location.origin}/share/${data.id}#${exportedKey}`;
       setShareLink(url);
       await navigator.clipboard.writeText(url);
       toast.success(
@@ -182,30 +192,40 @@ const Index: React.FC = () => {
   useEffect(() => {
     // If on /share/:id, fetch shared JSON from Supabase
     if (shareId) {
-      import('../lib/supabaseClient').then(({ supabase }) => {
-        supabase
+      // Get key from URL hash
+      const keyHash = window.location.hash.replace(/^#/, '');
+      if (!keyHash) {
+        toast.error('Missing decryption key in link.');
+        return;
+      }
+      import('../lib/supabaseClient').then(async ({ supabase }) => {
+        const { data, error } = await supabase
           .from('shared_json')
           .select('json,created_at')
           .eq('id', shareId)
-          .single()
-          .then(({ data, error }) => {
-            if (error || !data) {
-              toast.error('Invalid or expired share link.');
-              return;
-            }
-            // Check expiry (15 minutes)
-            const created = new Date(data.created_at);
-            const now = new Date();
-            const diff = (now.getTime() - created.getTime()) / 1000 / 60;
-            if (diff > 15) {
-              toast.error('This Vison link has expired.');
-              return;
-            }
-            setParsedData(data.json);
-            setJsonString(formatJson(data.json));
-            setIsArray(Array.isArray(data.json));
-            toast.info('You are viewing a shared JSON file.');
-          });
+          .single();
+        if (error || !data) {
+          toast.error('Invalid or expired share link.');
+          return;
+        }
+        // Check expiry (15 minutes)
+        const created = new Date(data.created_at);
+        const now = new Date();
+        const diff = (now.getTime() - created.getTime()) / 1000 / 60;
+        if (diff > 15) {
+          toast.error('This Vison link has expired.');
+          return;
+        }
+        try {
+          const key = await importKey(keyHash);
+          const decrypted = await decryptJson(data.json.ciphertext, data.json.iv, key);
+          setParsedData(decrypted);
+          setJsonString(formatJson(decrypted));
+          setIsArray(Array.isArray(decrypted));
+          toast.info('You are viewing a shared JSON file.');
+        } catch (e) {
+          toast.error('Failed to decrypt shared JSON.');
+        }
       });
     } else {
       // Only set sample data if no JSON has been entered yet
