@@ -3,6 +3,7 @@ name: Delete Rows Daily
 on:
   schedule:
     - cron: '0 0 * * *'  # This means every day at midnight UTC
+  workflow_dispatch:
 
 jobs:
   delete-rows:
