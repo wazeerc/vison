@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import JsonInput from '../components/JsonInput';
 import JsonTable from '../components/JsonTable';
 import JsonTreeView from '../components/JsonTreeView'; // Import the new Tree View component
+import { supabase } from '../lib/supabaseClient';
 import { encryptJson, exportKey, generateKey } from '../utils/cryptoUtils';
 import { formatJson, getJsonDepth, JsonValue, parseJson } from '../utils/jsonUtils'; // Import JsonValue type and getJsonDepth
 
