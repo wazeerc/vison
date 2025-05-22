@@ -1,0 +1,15 @@
+name: Delete Rows Daily
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # This means every day at midnight UTC
+
+jobs:
+  delete-rows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Edge Function
+        run: |
+          curl -X POST -H 
+          "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
+          https://dbfnfgmasnjlhaxhxpfo.supabase.co/functions/v1/auto-delete-rows
