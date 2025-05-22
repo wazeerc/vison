@@ -10,6 +10,4 @@ jobs:
     steps:
       - name: Call Edge Function
         run: |
-          curl -X POST -H 
-          "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}"
-          https://dbfnfgmasnjlhaxhxpfo.supabase.co/functions/v1/auto-delete-rows
+          curl -X POST -H "Authorization: Bearer ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}" "${{ secrets.SUPABASE_URL }}/functions/v1/delete-all-rows"
