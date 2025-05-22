@@ -20,7 +20,13 @@ export async function encryptJson(
   key: CryptoKey
 ): Promise<{ ciphertext: string; iv: string }> {
   const iv = crypto.getRandomValues(new Uint8Array(12));
-  const encoded = new TextEncoder().encode(JSON.stringify(json));
+  let jsonString: string;
+  try {
+    jsonString = JSON.stringify(json);
+  } catch (error) {
+    throw new Error('Encryption failed: Cannot serialize the provided data to JSON');
+  }
+  const encoded = new TextEncoder().encode(jsonString);
   const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, encoded);
   return {
     ciphertext: btoa(String.fromCharCode(...new Uint8Array(ciphertext))),
@@ -44,7 +50,10 @@ export async function decryptJson<T = unknown>(
     } else if (error instanceof SyntaxError) {
       throw new Error('Decryption failed: Invalid JSON data');
     }
-    console.error('Decryption failed:', error);
+    console.error(
+      'Decryption failed with an unexpected error type:',
+      error instanceof Error ? error.name : typeof error
+    );
     throw new Error('Failed to decrypt data');
   }
 }

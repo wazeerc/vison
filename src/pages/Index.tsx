@@ -1,4 +1,4 @@
-import { decryptJson, importKey } from '@/utils/cryptoUtils';
+import { decryptJson, encryptJson, exportKey, generateKey, importKey } from '@/utils/cryptoUtils';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -9,7 +9,6 @@ import JsonInput from '../components/JsonInput';
 import JsonTable from '../components/JsonTable';
 import JsonTreeView from '../components/JsonTreeView'; // Import the new Tree View component
 import { supabase } from '../lib/supabaseClient';
-import { encryptJson, exportKey, generateKey } from '../utils/cryptoUtils';
 import { formatJson, getJsonDepth, JsonValue, parseJson } from '../utils/jsonUtils'; // Import JsonValue type and getJsonDepth
 
 // Define view types
@@ -197,7 +196,7 @@ const Index: React.FC = () => {
         toast.error('Missing decryption key in link.');
         return;
       }
-      import('../lib/supabaseClient').then(async ({ supabase }) => {
+      const fetchData = async () => {
         const { data, error } = await supabase
           .from('shared_json')
           .select('json,created_at')
@@ -226,7 +225,9 @@ const Index: React.FC = () => {
         } catch (e) {
           toast.error('Failed to decrypt shared JSON.');
         }
-      });
+      };
+
+      fetchData();
     } else {
       // Only set sample data if no JSON has been entered yet
       if (!jsonString) {
