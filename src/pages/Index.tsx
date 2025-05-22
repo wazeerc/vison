@@ -245,7 +245,7 @@ const Index: React.FC = () => {
       <div className="container px-4 py-8 mx-auto">
         <Header />
         <main className="flex flex-col gap-6 max-w-4xl mx-auto">
-          <JsonInput onJsonChange={handleJsonChange} />
+          <JsonInput onJsonChange={handleJsonChange} initialValue={jsonString} />
           {/* View Switcher */}
           {parsedData && (
             <div className="flex justify-center gap-6 mb-6 animate-fade-in">
