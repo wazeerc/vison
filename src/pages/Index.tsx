@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Footer from '../components/Footer';
@@ -31,6 +31,8 @@ const Index: React.FC = () => {
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [displayedView, setDisplayedView] = useState<ViewMode>('table'); // What's actually shown
 
+  const displayedShareIdToastRef = useRef<string | null>(null);
+
   const sampleJson = `{
     "name": "Vison Example",
     "version": "1.0.0",
@@ -59,7 +61,7 @@ const Index: React.FC = () => {
         setIsTransitioning(false);
       }, 300); // Match this with the CSS transition duration
     },
-    [currentView, isTransitioning, setCurrentView, setDisplayedView, setIsTransitioning]
+    [currentView, isTransitioning]
   );
 
   // Process JSON input
@@ -100,8 +102,8 @@ const Index: React.FC = () => {
         handleViewChange('table'); // Reset if no data
       }
     },
-    [setJsonString, setParsedData, setError, setIsArray, handleViewChange, currentView]
-  ); // Removed toast from dependencies
+    [handleViewChange, currentView] // Removed state setters and toast from deps
+  );
 
   // Handle data changes from table/tree edits
   const handleDataChange = (updatedData: JsonValue) => {
@@ -127,13 +129,13 @@ const Index: React.FC = () => {
       // 2. Encrypt the JSON
       const { ciphertext, iv } = await encryptJson(parsedData, key);
       // 3. Store ciphertext and iv in Supabase
-      const { data, error } = await supabase
+      const { data, error: supabaseError } = await supabase // Renamed error to avoid conflict
         .from('shared_json')
         .insert([{ json: { ciphertext, iv } }])
         .select('id')
         .single();
-      if (error || !data?.id) {
-        throw error || new Error('Failed to create shareable link');
+      if (supabaseError || !data?.id) {
+        throw supabaseError || new Error('Failed to create shareable link');
       }
       // 4. Share link contains both id and key
       const url = `${window.location.origin}/share/${data.id}#${exportedKey}`;
@@ -195,56 +197,77 @@ const Index: React.FC = () => {
       });
   };
 
-  // Provide some sample data for first-time users
+  // Effect 1: Handle fetching and initial processing of shared JSON
   useEffect(() => {
-    // If on /share/:id, fetch shared JSON from Supabase
     if (shareId) {
-      // Get key from URL hash
       const keyHash = window.location.hash.replace(/^#/, '');
       if (!keyHash) {
         toast.error('Missing decryption key in link.');
         return;
       }
+
       const fetchData = async () => {
-        const { data, error } = await supabase
-          .from('shared_json')
-          .select('json,created_at')
-          .eq('id', shareId)
-          .single();
-        if (error || !data) {
-          toast.error('Invalid or expired share link.');
-          return;
-        }
-        // Check expiry (15 minutes)
-        const created = new Date(data.created_at);
-        const now = new Date();
-        const diff = (now.getTime() - created.getTime()) / 1000 / 60;
-        if (diff > 15) {
-          toast.error('This Vison link has expired.');
-          return;
-        }
         try {
+          const { data, error: fetchError } = await supabase
+            .from('shared_json')
+            .select('json,created_at')
+            .eq('id', shareId)
+            .single();
+
+          if (fetchError || !data) {
+            toast.error('Invalid or expired share link.');
+            if (displayedShareIdToastRef.current === shareId) {
+              displayedShareIdToastRef.current = null;
+            }
+            return;
+          }
+
+          const created = new Date(data.created_at);
+          const now = new Date();
+          const diff = (now.getTime() - created.getTime()) / 1000 / 60;
+          if (diff > 15) {
+            // 15 minutes expiry
+            toast.error('This Vison link has expired.');
+            if (displayedShareIdToastRef.current === shareId) {
+              displayedShareIdToastRef.current = null;
+            }
+            return;
+          }
+
           const key = await importKey(keyHash);
           const decrypted = await decryptJson(data.json.ciphertext, data.json.iv, key);
-          setParsedData(decrypted as JsonValue);
-          setJsonString(formatJson(decrypted as JsonValue));
-          setIsArray(Array.isArray(decrypted));
-          toast.info('You are viewing a shared JSON file.');
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+          // Use handleJsonChange to set the initial shared JSON
+          // This ensures consistent state updates and view logic handling
+          handleJsonChange(formatJson(decrypted as JsonValue));
+
+          if (displayedShareIdToastRef.current !== shareId) {
+            toast.info('You are viewing a shared JSON file.');
+            displayedShareIdToastRef.current = shareId;
+          }
         } catch (e) {
-          toast.error('Failed to decrypt shared JSON.');
+          toast.error('Failed to decrypt or load shared JSON.');
+          console.error('Decryption/fetch error:', e);
+          if (displayedShareIdToastRef.current === shareId) {
+            displayedShareIdToastRef.current = null;
+          }
         }
       };
 
       fetchData();
     } else {
-      // Only set sample data if no JSON has been entered yet
-      if (!jsonString) {
-        handleJsonChange(sampleJson); // Use handleJsonChange to set initial sample
-      }
+      // No shareId, so clear the ref, so if user navigates back to a share link, toast shows.
+      displayedShareIdToastRef.current = null;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shareId, sampleJson, handleJsonChange]); // Added sampleJson and handleJsonChange to deps
+  }, [shareId, handleJsonChange]); // Added handleJsonChange to deps
+
+  // Effect 2: Handle initial sample data if no shareId and no existing jsonString
+  useEffect(() => {
+    if (!shareId && !jsonString) {
+      // only run if no shareId and jsonString is empty
+      handleJsonChange(sampleJson);
+    }
+  }, [shareId, jsonString, sampleJson, handleJsonChange]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-vison-bg">
