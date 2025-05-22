@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 import {
   convertValueType,
   flattenJson,
@@ -77,10 +78,8 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, onDataChange }) => {
         <table className="vison-table">
           <thead>
             <tr>
-              {/* Row number column */}
               <th className="w-12 text-center">#</th>
 
-              {/* Data columns */}
               {keys.map(key => (
                 <th key={key}>{key}</th>
               ))}
@@ -96,7 +95,6 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, onDataChange }) => {
                   const isEditing = editCell?.row === rowIndex && editCell?.key === key;
                   const canEdit = isEditableValue(value);
 
-                  // Display cell content
                   return (
                     <td
                       key={`${rowIndex}-${key}`}
@@ -134,7 +132,6 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, onDataChange }) => {
   );
 };
 
-// Helper component to display cell content based on value type
 const CellContent: React.FC<{ value: unknown }> = ({ value }) => {
   if (value == null) {
     return <span className="text-gray-400 italic">{String(value)}</span>;

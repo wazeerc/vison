@@ -1,15 +1,18 @@
-import { decryptJson, encryptJson, exportKey, generateKey, importKey } from '@/utils/cryptoUtils';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { toast } from 'sonner';
+
 import Footer from '../components/Footer';
-import { CopyIcon, DownloadIcon, TableViewIcon, TreeViewIcon } from '../components/HandDrawnIcons'; // Added CopyIcon, TableViewIcon, TreeViewIcon
+import { CopyIcon, DownloadIcon, TableViewIcon, TreeViewIcon } from '../components/HandDrawnIcons';
 import Header from '../components/Header';
 import JsonInput from '../components/JsonInput';
 import JsonTable from '../components/JsonTable';
-import JsonTreeView from '../components/JsonTreeView'; // Import the new Tree View component
+import JsonTreeView from '../components/JsonTreeView';
+
+import { toast } from 'sonner';
 import { supabase } from '../lib/supabaseClient';
-import { formatJson, getJsonDepth, JsonValue, parseJson } from '../utils/jsonUtils'; // Import JsonValue type and getJsonDepth
+
+import { decryptJson, encryptJson, exportKey, generateKey, importKey } from '@/utils/cryptoUtils';
+import { formatJson, getJsonDepth, JsonValue, parseJson } from '../utils/jsonUtils';
 
 // Define view types
 type ViewMode = 'table' | 'tree';

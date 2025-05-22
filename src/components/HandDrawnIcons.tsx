@@ -132,58 +132,6 @@ export const CopyIcon: React.FC<{ className?: string }> = ({ className }) => {
   );
 };
 
-export const CodeIcon: React.FC<{ className?: string }> = ({ className }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      style={{ filter: 'url(#hand-drawn-filter)' }}
-    >
-      <defs>
-        <filter id="hand-drawn-filter">
-          <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="3" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1" />
-        </filter>
-      </defs>
-      <polyline points="16 18 22 12 16 6" />
-      <polyline points="8 6 2 12 8 18" />
-    </svg>
-  );
-};
-
-export const JsonIcon: React.FC<{ className?: string }> = ({ className }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      style={{ filter: 'url(#hand-drawn-filter)' }}
-    >
-      <defs>
-        <filter id="hand-drawn-filter">
-          <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="3" result="noise" />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="1" />
-        </filter>
-      </defs>
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-      <polyline points="14 2 14 8 20 8" />
-      <path d="M8.5 10.5c-.83 1.2-2.5 1-2.5 2.5 0 1.5 1.67 1.3 2.5 2.5" />
-      <path d="M15 11v-1l2 2-2 2v-1" />
-    </svg>
-  );
-};
-
 export const VisonLogo: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <svg

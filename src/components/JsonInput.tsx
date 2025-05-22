@@ -1,8 +1,11 @@
-import { RotateCcw } from 'lucide-react';
 import React, { useRef, useState } from 'react';
+
+import { RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
+
 import { parseJson } from '../utils/jsonUtils';
 import { UploadIcon } from './HandDrawnIcons';
+
 import { Textarea } from './ui/textarea';
 
 interface JsonInputProps {
