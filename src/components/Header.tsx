@@ -4,7 +4,7 @@ import { VisonLogo } from './HandDrawnIcons';
 
 const Header: React.FC = () => {
   return (
-    <header className="py-8 mb-8 border-b border-gray-100 animate-fade-in">
+    <header className="py-8 mb-8 border-b border-vison-purple/5 animate-fade-in">
       <div className="flex items-center justify-center gap-3 mb-2">
         <div className="relative">
           <VisonLogo className="w-8 h-8 text-vison-purple" />
