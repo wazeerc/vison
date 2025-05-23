@@ -133,6 +133,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
         onDrop={handleDrop}
       >
         <Textarea
+          autoFocus
           className="w-full min-h-[160px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-purple focus:bg-white transition-all duration-200"
           placeholder="Paste your JSON here..."
           value={jsonText}
