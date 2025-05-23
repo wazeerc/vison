@@ -111,7 +111,6 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
   const handleReset = () => {
     setJsonText('');
     onJsonChange('');
-    toast.success('Input JSON cleared');
     // If on a shared link, also clear the URL (remove shareId from route)
     if (window.location.pathname.startsWith('/share/')) {
       window.history.replaceState({}, '', '/');
@@ -135,15 +134,17 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
         <Textarea
           autoFocus
           className="w-full min-h-[160px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-purple focus:bg-white transition-all duration-200"
-          placeholder="Paste your JSON here..."
+          placeholder={
+            '{\n  // Paste or type your JSON here\n  "name": "Vison",\n  "features": [\n    "View", "Edit", "Share"\n  ]\n}'
+          }
           value={jsonText}
           onChange={handleTextChange}
         />
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="text-sm text-vison-charcoal/85">
-          {jsonText ? `${jsonText.length} characters` : 'No JSON input yet'}
+        <div className="text-sm text-vison-charcoal/85 italic">
+          {jsonText ? `${jsonText.length} characters` : ''}
         </div>
 
         <div className="flex gap-2">
