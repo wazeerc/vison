@@ -148,7 +148,9 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
         <div className="flex gap-2">
           <button
             disabled={!jsonText}
+            aria-disabled={!jsonText}
             onClick={handleReset}
+            aria-label="Reset JSON input"
             className="btn-with-icon flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             title="Reset"
           >
@@ -163,6 +165,8 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
             onChange={handleFileUpload}
           />
           <button
+            aria-label="Upload JSON file"
+            title="Upload JSON file"
             onClick={triggerFileInput}
             className="btn-with-icon flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
           >

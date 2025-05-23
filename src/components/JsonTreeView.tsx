@@ -335,6 +335,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
         {/* Chevron */}
         {isNodeObject ? (
           <button
+            aria-label="Toggle expand/collapse"
             onClick={handleToggleExpand}
             className="p-0.5 rounded hover:bg-gray-200 mr-1 text-gray-500 flex-shrink-0"
           >
