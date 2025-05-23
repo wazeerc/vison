@@ -6,7 +6,7 @@
 
 Vison is a web application designed to help non-technical individuals easily view and edit JSON data through an intuitive interface.
 
-**New: Secure Share!**
+**🔐 New: Secure Share!**
 
 Vison now lets you share JSON data with end-to-end encryption. When you use the Share button, your JSON is encrypted in your browser and only those with your unique link can decrypt and view it. Even the server cannot see your data.
 
