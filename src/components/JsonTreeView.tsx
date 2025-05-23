@@ -235,7 +235,7 @@ const JsonTreeView: React.FC<JsonTreeViewProps> = ({ jsonData, onDataChange }) =
           handleKeyDown={handleKeyDown} // Pass handler down
         />
       </div>
-      <div className="mt-4 text-sm text-vison-charcoal/70">
+      <div className="mt-4 text-sm text-vison-charcoal/85">
         <span className="ml-1 text-xs">(Click on primitive values to edit)</span>
       </div>
     </div>

@@ -67,7 +67,7 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, onDataChange }) => {
     return (
       <div className="vison-card text-center p-8 animate-fade-in hover:shadow-soft-lg transition-all duration-300">
         <TableViewIcon className="mx-auto w-12 h-12 text-gray-300 mb-3" />
-        <p className="text-vison-charcoal/70">Enter valid JSON to see the table view</p>
+        <p className="text-vison-charcoal/85">Enter valid JSON to see the table view</p>
       </div>
     );
   }
@@ -123,7 +123,7 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, onDataChange }) => {
         </table>
       </div>
 
-      <div className="mt-4 text-sm text-vison-charcoal/70">
+      <div className="mt-4 text-sm text-vison-charcoal/85">
         {flattenedData.length} {flattenedData.length === 1 ? 'row' : 'rows'}, {keys.length}{' '}
         {keys.length === 1 ? 'column' : 'columns'}
         <span className="ml-1 text-xs">(Click on cell values to edit)</span>

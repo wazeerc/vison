@@ -141,7 +141,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="text-sm text-vison-charcoal/70">
+        <div className="text-sm text-vison-charcoal/85">
           {jsonText ? `${jsonText.length} characters` : 'No JSON input yet'}
         </div>
 
