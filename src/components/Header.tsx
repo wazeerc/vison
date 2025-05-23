@@ -7,7 +7,7 @@ const Header: React.FC = () => {
     <header className="py-8 mb-8 border-b border-vison-purple/5 animate-fade-in">
       <div className="flex items-center justify-center gap-3 mb-2">
         <div className="relative">
-          <VisonLogo className="w-8 h-8 text-vison-purple" />
+          <VisonLogo className="w-9 h-9 text-vison-purple" />
           <div className="absolute inset-0 bg-vison-purple/10 rounded-full blur-xl -z-10"></div>
         </div>
         <h1 className="text-4xl font-bold text-vison-dark-charcoal font-nunito">Vison</h1>
