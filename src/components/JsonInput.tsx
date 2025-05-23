@@ -55,7 +55,6 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
         }
         setJsonText(content);
         onJsonChange(content);
-        toast.success('JSON file loaded successfully!');
       } catch (error) {
         toast.error('Failed to parse JSON file');
         console.error('Error parsing JSON file:', error);
@@ -96,7 +95,6 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
         }
         setJsonText(content);
         onJsonChange(content);
-        toast.success('JSON file loaded successfully!');
       } catch (error) {
         toast.error('Failed to parse JSON file');
         console.error('Error parsing JSON file:', error);
@@ -140,9 +138,17 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
           ref={textareaRef}
           autoFocus
           className="w-full min-h-[180px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-purple focus:bg-white transition-all duration-200"
-          placeholder={
-            '{\n  // Paste or type your JSON here\n  "name": "Vison",\n  "features": [\n    "View", "Edit", "Share"\n  ]\n}'
-          }
+          placeholder={[
+            '{',
+            '  "name": "Vison",',
+            '  "features": [',
+            '    "View",',
+            '    "Edit",',
+            '    "Share"',
+            '  ]',
+            '}',
+            '',
+          ].join('\n')}
           value={jsonText}
           onChange={handleTextChange}
         />
