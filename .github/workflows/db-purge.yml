@@ -5,6 +5,9 @@ on:
     - cron: '0 0 * * *'  # This means every day at midnight UTC
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   delete-rows:
     runs-on: ubuntu-latest
