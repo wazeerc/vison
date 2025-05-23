@@ -104,7 +104,9 @@ CREATE TABLE IF NOT EXISTS shared_json (
 DELETE FROM shared_json WHERE created_at < NOW() - INTERVAL '15 minutes';
 ```
 
-1. Start the app and enjoy secure sharing!
+Note: In the current implementation, the Supabase table is cleared every 24 hours using a cron job which invokes an [Edge Function](https://supabase.com/docs/guides/functions).
+
+5. Start the app and enjoy secure sharing!
 
 ## Contributing
 
