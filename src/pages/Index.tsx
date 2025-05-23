@@ -32,6 +32,7 @@ const Index: React.FC = () => {
   const [displayedView, setDisplayedView] = useState<ViewMode>('table'); // What's actually shown
 
   const displayedShareIdToastRef = useRef<string | null>(null);
+  const autoSwitchedRef = useRef<boolean>(false);
 
   // Handle view transition with animation
   const handleViewChange = useCallback(
@@ -39,6 +40,8 @@ const Index: React.FC = () => {
       if (currentView === newView || isTransitioning) return;
 
       setIsTransitioning(true);
+
+      autoSwitchedRef.current = true;
 
       // First update the button state immediately for feedback
       setCurrentView(newView);
@@ -61,6 +64,7 @@ const Index: React.FC = () => {
         setError(null);
         setIsArray(false); // Reset isArray
         handleViewChange('table'); // Reset view
+        autoSwitchedRef.current = false;
         return;
       }
 
@@ -71,26 +75,29 @@ const Index: React.FC = () => {
       if (result.error) {
         toast.error(`JSON Parse Error: ${result.error}`);
         handleViewChange('table'); // Reset view on error
+        autoSwitchedRef.current = false;
       } else if (result.data) {
         // Check complexity and switch view if needed
         const depth = getJsonDepth(result.data);
         if (depth >= COMPLEXITY_DEPTH_THRESHOLD) {
-          // Only switch automatically if the current view isn't already tree (to respect manual selection)
-          if (currentView !== 'tree') {
+          // Only auto-switch if not already switched for this session and user hasn't manually changed view
+          if (currentView !== 'tree' && !autoSwitchedRef.current) {
+            autoSwitchedRef.current = true;
             handleViewChange('tree');
             toast.info('Switched to Tree View due to JSON complexity.');
           }
         } else {
           // Default to table view if not complex, unless user manually switched to tree
-          if (currentView !== 'tree') {
+          if (currentView !== 'tree' && !autoSwitchedRef.current) {
             handleViewChange('table');
           }
         }
       } else {
         handleViewChange('table'); // Reset if no data
+        autoSwitchedRef.current = false;
       }
     },
-    [handleViewChange, currentView] // Removed state setters and toast from deps
+    [handleViewChange, currentView]
   );
 
   // Handle data changes from table/tree edits
