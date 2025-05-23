@@ -112,11 +112,15 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
     setJsonText('');
     onJsonChange('');
     toast.success('Input JSON cleared');
+    // If on a shared link, also clear the URL (remove shareId from route)
+    if (window.location.pathname.startsWith('/share/')) {
+      window.history.replaceState({}, '', '/');
+    }
   };
 
   return (
     <div className="my-8 vison-card animate-fade-in hover:shadow-purple-lg transition-all duration-300">
-      <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal">Input JSON</h2>
+      <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal/80">Input JSON</h2>
 
       <div
         className={`p-4 mb-4 border-2 border-dashed rounded-xl transition-colors ${
@@ -129,6 +133,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
         onDrop={handleDrop}
       >
         <Textarea
+          autoFocus
           className="w-full min-h-[160px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-purple focus:bg-white transition-all duration-200"
           placeholder="Paste your JSON here..."
           value={jsonText}
@@ -137,14 +142,17 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="text-sm text-vison-charcoal/70">
+        <div className="text-sm text-vison-charcoal/85">
           {jsonText ? `${jsonText.length} characters` : 'No JSON input yet'}
         </div>
 
         <div className="flex gap-2">
           <button
+            disabled={!jsonText}
+            aria-disabled={!jsonText}
             onClick={handleReset}
-            className="btn-with-icon flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors hover:shadow-soft active:scale-[0.98]"
+            aria-label="Reset JSON input"
+            className="btn-with-icon flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             title="Reset"
           >
             <RotateCcw className="w-5 h-5" />
@@ -158,6 +166,8 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
             onChange={handleFileUpload}
           />
           <button
+            aria-label="Upload JSON file"
+            title="Upload JSON file"
             onClick={triggerFileInput}
             className="btn-with-icon flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
           >

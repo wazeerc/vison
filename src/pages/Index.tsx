@@ -32,18 +32,7 @@ const Index: React.FC = () => {
   const [displayedView, setDisplayedView] = useState<ViewMode>('table'); // What's actually shown
 
   const displayedShareIdToastRef = useRef<string | null>(null);
-
-  const sampleJson = `{
-    "name": "Vison Example",
-    "version": "1.0.0",
-    "active": true,
-    "description": "A sample JSON for demonstrating Vison",
-    "features": ["Easy editing", "Table view", "Real-time updates"],
-    "stats": {
-      "users": 1250,
-      "rating": 4.8
-    }
-  }` as string; // Sample JSON for initial load
+  const autoSwitchedRef = useRef<boolean>(false);
 
   // Handle view transition with animation
   const handleViewChange = useCallback(
@@ -51,6 +40,8 @@ const Index: React.FC = () => {
       if (currentView === newView || isTransitioning) return;
 
       setIsTransitioning(true);
+
+      autoSwitchedRef.current = true;
 
       // First update the button state immediately for feedback
       setCurrentView(newView);
@@ -73,6 +64,7 @@ const Index: React.FC = () => {
         setError(null);
         setIsArray(false); // Reset isArray
         handleViewChange('table'); // Reset view
+        autoSwitchedRef.current = false;
         return;
       }
 
@@ -83,26 +75,29 @@ const Index: React.FC = () => {
       if (result.error) {
         toast.error(`JSON Parse Error: ${result.error}`);
         handleViewChange('table'); // Reset view on error
+        autoSwitchedRef.current = false;
       } else if (result.data) {
         // Check complexity and switch view if needed
         const depth = getJsonDepth(result.data);
         if (depth >= COMPLEXITY_DEPTH_THRESHOLD) {
-          // Only switch automatically if the current view isn't already tree (to respect manual selection)
-          if (currentView !== 'tree') {
+          // Only auto-switch if not already switched for this session and user hasn't manually changed view
+          if (currentView !== 'tree' && !autoSwitchedRef.current) {
+            autoSwitchedRef.current = true;
             handleViewChange('tree');
             toast.info('Switched to Tree View due to JSON complexity.');
           }
         } else {
           // Default to table view if not complex, unless user manually switched to tree
-          if (currentView !== 'tree') {
+          if (currentView !== 'tree' && !autoSwitchedRef.current) {
             handleViewChange('table');
           }
         }
       } else {
         handleViewChange('table'); // Reset if no data
+        autoSwitchedRef.current = false;
       }
     },
-    [handleViewChange, currentView] // Removed state setters and toast from deps
+    [handleViewChange, currentView]
   );
 
   // Handle data changes from table/tree edits
@@ -192,9 +187,14 @@ const Index: React.FC = () => {
       });
   };
 
-  // Effect 1: Handle fetching and initial processing of shared JSON
+  // Effect: Handle fetching and initial processing of shared JSON
   useEffect(() => {
     if (shareId) {
+      // If the user has reset (URL changed but shareId param still present), don't try to load shared data
+      if (window.location.pathname === '/' && !window.location.hash) {
+        // Do nothing, user has reset
+        return;
+      }
       const keyHash = window.location.hash.replace(/^#/, '');
       if (!keyHash) {
         toast.error('Missing decryption key in link.');
@@ -253,16 +253,11 @@ const Index: React.FC = () => {
     } else {
       // No shareId, so clear the ref, so if user navigates back to a share link, toast shows.
       displayedShareIdToastRef.current = null;
+      if (!jsonString) {
+        handleJsonChange('');
+      }
     }
-  }, [shareId, handleJsonChange]); // Added handleJsonChange to deps
-
-  // Effect 2: Handle initial sample data if no shareId and no existing jsonString
-  useEffect(() => {
-    if (!shareId && !jsonString) {
-      // only run if no shareId and jsonString is empty
-      handleJsonChange(sampleJson);
-    }
-  }, [shareId, jsonString, sampleJson, handleJsonChange]);
+  }, [shareId, handleJsonChange, jsonString]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-vison-bg">
@@ -326,10 +321,11 @@ const Index: React.FC = () => {
             <div className="flex justify-between items-center">
               {/* Share Button */}
               <button
-                disabled={isSharing || jsonString === sampleJson}
+                disabled={isSharing}
                 onClick={handleShare}
                 aria-label="Share JSON"
-                className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-semibold transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed min-w-[80px]"
+                title="Share JSON"
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-semibold transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed min-w-[80px] min-h-[40px]"
               >
                 {isSharing ? (
                   <svg
@@ -362,6 +358,7 @@ const Index: React.FC = () => {
                   <button
                     onClick={handleCopy}
                     aria-label="Copy JSON to clipboard"
+                    title="Copy JSON to clipboard"
                     className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-medium transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98]"
                   >
                     <CopyIcon className="w-5 h-5" />
@@ -370,6 +367,7 @@ const Index: React.FC = () => {
                   <button
                     onClick={handleDownload}
                     aria-label="Download JSON file"
+                    title="Download JSON file"
                     className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-purple text-white font-medium transition-all hover:bg-vison-purple-dark hover:shadow-purple active:scale-[0.98]"
                   >
                     <DownloadIcon className="w-5 h-5" />

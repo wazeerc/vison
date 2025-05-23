@@ -235,7 +235,7 @@ const JsonTreeView: React.FC<JsonTreeViewProps> = ({ jsonData, onDataChange }) =
           handleKeyDown={handleKeyDown} // Pass handler down
         />
       </div>
-      <div className="mt-4 text-sm text-vison-charcoal/70">
+      <div className="mt-4 text-sm text-vison-charcoal/85">
         <span className="ml-1 text-xs">(Click on primitive values to edit)</span>
       </div>
     </div>
@@ -335,6 +335,7 @@ const TreeNode: React.FC<TreeNodeProps> = ({
         {/* Chevron */}
         {isNodeObject ? (
           <button
+            aria-label="Toggle expand/collapse"
             onClick={handleToggleExpand}
             className="p-0.5 rounded hover:bg-gray-200 mr-1 text-gray-500 flex-shrink-0"
           >
