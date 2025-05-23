@@ -15,6 +15,7 @@ interface JsonInputProps {
 
 const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }) => {
   const [jsonText, setJsonText] = useState(initialValue);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
 
@@ -111,6 +112,10 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
   const handleReset = () => {
     setJsonText('');
     onJsonChange('');
+    // Reset textarea height
+    if (textareaRef.current) {
+      textareaRef.current.style.height = '';
+    }
     // If on a shared link, also clear the URL (remove shareId from route)
     if (window.location.pathname.startsWith('/share/')) {
       window.history.replaceState({}, '', '/');
@@ -132,8 +137,9 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
         onDrop={handleDrop}
       >
         <Textarea
+          ref={textareaRef}
           autoFocus
-          className="w-full min-h-[160px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-purple focus:bg-white transition-all duration-200"
+          className="w-full min-h-[180px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-purple focus:bg-white transition-all duration-200"
           placeholder={
             '{\n  // Paste or type your JSON here\n  "name": "Vison",\n  "features": [\n    "View", "Edit", "Share"\n  ]\n}'
           }
