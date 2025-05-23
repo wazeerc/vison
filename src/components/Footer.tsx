@@ -1,5 +1,6 @@
-import { Github } from 'lucide-react'; // Import Github icon
 import React from 'react';
+
+import { Github } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (

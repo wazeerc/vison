@@ -1,15 +1,18 @@
-import { decryptJson, encryptJson, exportKey, generateKey, importKey } from '@/utils/cryptoUtils';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { toast } from 'sonner';
+
 import Footer from '../components/Footer';
-import { CopyIcon, DownloadIcon, TableViewIcon, TreeViewIcon } from '../components/HandDrawnIcons'; // Added CopyIcon, TableViewIcon, TreeViewIcon
+import { CopyIcon, DownloadIcon, TableViewIcon, TreeViewIcon } from '../components/HandDrawnIcons';
 import Header from '../components/Header';
 import JsonInput from '../components/JsonInput';
 import JsonTable from '../components/JsonTable';
-import JsonTreeView from '../components/JsonTreeView'; // Import the new Tree View component
+import JsonTreeView from '../components/JsonTreeView';
+
+import { toast } from 'sonner';
 import { supabase } from '../lib/supabaseClient';
-import { formatJson, getJsonDepth, JsonValue, parseJson } from '../utils/jsonUtils'; // Import JsonValue type and getJsonDepth
+
+import { decryptJson, encryptJson, exportKey, generateKey, importKey } from '@/utils/cryptoUtils';
+import { formatJson, getJsonDepth, JsonValue, parseJson } from '../utils/jsonUtils';
 
 // Define view types
 type ViewMode = 'table' | 'tree';
@@ -23,10 +26,12 @@ const Index: React.FC = () => {
   // Use JsonValue for better typing, though top level could be object or array
   const [parsedData, setParsedData] = useState<JsonValue | null>(null);
   const [isArray, setIsArray] = useState<boolean>(false);
-  const [, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
   const [currentView, setCurrentView] = useState<ViewMode>('table'); // State for current view
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [displayedView, setDisplayedView] = useState<ViewMode>('table'); // What's actually shown
+
+  const displayedShareIdToastRef = useRef<string | null>(null);
 
   const sampleJson = `{
     "name": "Vison Example",
@@ -41,58 +46,64 @@ const Index: React.FC = () => {
   }` as string; // Sample JSON for initial load
 
   // Handle view transition with animation
-  const handleViewChange = (newView: ViewMode) => {
-    if (currentView === newView || isTransitioning) return;
+  const handleViewChange = useCallback(
+    (newView: ViewMode) => {
+      if (currentView === newView || isTransitioning) return;
 
-    setIsTransitioning(true);
+      setIsTransitioning(true);
 
-    // First update the button state immediately for feedback
-    setCurrentView(newView);
+      // First update the button state immediately for feedback
+      setCurrentView(newView);
 
-    // Small delay to allow CSS transitions to take effect
-    setTimeout(() => {
-      setDisplayedView(newView);
-      setIsTransitioning(false);
-    }, 300); // Match this with the CSS transition duration
-  };
+      // Small delay to allow CSS transitions to take effect
+      setTimeout(() => {
+        setDisplayedView(newView);
+        setIsTransitioning(false);
+      }, 300); // Match this with the CSS transition duration
+    },
+    [currentView, isTransitioning]
+  );
 
   // Process JSON input
-  const handleJsonChange = (json: string) => {
-    setJsonString(json);
-    if (!json.trim()) {
-      setParsedData(null);
-      setError(null);
-      setIsArray(false); // Reset isArray
-      handleViewChange('table'); // Reset view
-      return;
-    }
+  const handleJsonChange = useCallback(
+    (json: string) => {
+      setJsonString(json);
+      if (!json.trim()) {
+        setParsedData(null);
+        setError(null);
+        setIsArray(false); // Reset isArray
+        handleViewChange('table'); // Reset view
+        return;
+      }
 
-    const result = parseJson(json);
-    setParsedData(result.data);
-    setError(result.error);
-    setIsArray(result.isArray);
-    if (result.error) {
-      toast.error(`JSON Parse Error: ${result.error}`);
-      handleViewChange('table'); // Reset view on error
-    } else if (result.data) {
-      // Check complexity and switch view if needed
-      const depth = getJsonDepth(result.data);
-      if (depth >= COMPLEXITY_DEPTH_THRESHOLD) {
-        // Only switch automatically if the current view isn't already tree (to respect manual selection)
-        if (currentView !== 'tree') {
-          handleViewChange('tree');
-          toast.info('Switched to Tree View due to JSON complexity.');
+      const result = parseJson(json);
+      setParsedData(result.data);
+      setError(result.error);
+      setIsArray(result.isArray);
+      if (result.error) {
+        toast.error(`JSON Parse Error: ${result.error}`);
+        handleViewChange('table'); // Reset view on error
+      } else if (result.data) {
+        // Check complexity and switch view if needed
+        const depth = getJsonDepth(result.data);
+        if (depth >= COMPLEXITY_DEPTH_THRESHOLD) {
+          // Only switch automatically if the current view isn't already tree (to respect manual selection)
+          if (currentView !== 'tree') {
+            handleViewChange('tree');
+            toast.info('Switched to Tree View due to JSON complexity.');
+          }
+        } else {
+          // Default to table view if not complex, unless user manually switched to tree
+          if (currentView !== 'tree') {
+            handleViewChange('table');
+          }
         }
       } else {
-        // Default to table view if not complex, unless user manually switched to tree
-        if (currentView !== 'tree') {
-          handleViewChange('table');
-        }
+        handleViewChange('table'); // Reset if no data
       }
-    } else {
-      handleViewChange('table'); // Reset if no data
-    }
-  };
+    },
+    [handleViewChange, currentView] // Removed state setters and toast from deps
+  );
 
   // Handle data changes from table/tree edits
   const handleDataChange = (updatedData: JsonValue) => {
@@ -118,25 +129,20 @@ const Index: React.FC = () => {
       // 2. Encrypt the JSON
       const { ciphertext, iv } = await encryptJson(parsedData, key);
       // 3. Store ciphertext and iv in Supabase
-      const { data, error } = await supabase
+      const { data, error: supabaseError } = await supabase // Renamed error to avoid conflict
         .from('shared_json')
         .insert([{ json: { ciphertext, iv } }])
         .select('id')
         .single();
-      if (error || !data?.id) {
-        throw error || new Error('Failed to create shareable link');
+      if (supabaseError || !data?.id) {
+        throw supabaseError || new Error('Failed to create shareable link');
       }
       // 4. Share link contains both id and key
       const url = `${window.location.origin}/share/${data.id}#${exportedKey}`;
       setShareLink(url);
       await navigator.clipboard.writeText(url);
-      toast.success(
-        <span className="text-sm font-medium">
-          Shareable Vison link copied to clipboard!
-          <br />
-          Anyone with this link can access your JSON data.
-        </span>
-      );
+      toast.info('Anyone with this link can access your JSON data, it will expire in 15 minutes.');
+      toast.success('Shareable Vison link copied to your clipboard!');
     } catch (err) {
       toast.error('Failed to create share link');
       console.error(err);
@@ -186,59 +192,77 @@ const Index: React.FC = () => {
       });
   };
 
-  // Provide some sample data for first-time users
+  // Effect 1: Handle fetching and initial processing of shared JSON
   useEffect(() => {
-    // If on /share/:id, fetch shared JSON from Supabase
     if (shareId) {
-      // Get key from URL hash
       const keyHash = window.location.hash.replace(/^#/, '');
       if (!keyHash) {
         toast.error('Missing decryption key in link.');
         return;
       }
+
       const fetchData = async () => {
-        const { data, error } = await supabase
-          .from('shared_json')
-          .select('json,created_at')
-          .eq('id', shareId)
-          .single();
-        if (error || !data) {
-          toast.error('Invalid or expired share link.');
-          return;
-        }
-        // Check expiry (15 minutes)
-        const created = new Date(data.created_at);
-        const now = new Date();
-        const diff = (now.getTime() - created.getTime()) / 1000 / 60;
-        if (diff > 15) {
-          toast.error('This Vison link has expired.');
-          return;
-        }
         try {
+          const { data, error: fetchError } = await supabase
+            .from('shared_json')
+            .select('json,created_at')
+            .eq('id', shareId)
+            .single();
+
+          if (fetchError || !data) {
+            toast.error('Invalid or expired share link.');
+            if (displayedShareIdToastRef.current === shareId) {
+              displayedShareIdToastRef.current = null;
+            }
+            return;
+          }
+
+          const created = new Date(data.created_at);
+          const now = new Date();
+          const diff = (now.getTime() - created.getTime()) / 1000 / 60;
+          if (diff > 15) {
+            // 15 minutes expiry
+            toast.error('This Vison link has expired.');
+            if (displayedShareIdToastRef.current === shareId) {
+              displayedShareIdToastRef.current = null;
+            }
+            return;
+          }
+
           const key = await importKey(keyHash);
           const decrypted = await decryptJson(data.json.ciphertext, data.json.iv, key);
-          setParsedData(decrypted as JsonValue);
-          setJsonString(formatJson(decrypted as JsonValue));
-          setIsArray(Array.isArray(decrypted));
-          toast.info('You are viewing a shared JSON file.');
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+          // Use handleJsonChange to set the initial shared JSON
+          // This ensures consistent state updates and view logic handling
+          handleJsonChange(formatJson(decrypted as JsonValue));
+
+          if (displayedShareIdToastRef.current !== shareId) {
+            toast.info('You are viewing a shared JSON file.');
+            displayedShareIdToastRef.current = shareId;
+          }
         } catch (e) {
-          toast.error('Failed to decrypt shared JSON.');
+          toast.error('Failed to decrypt or load shared JSON.');
+          console.error('Decryption/fetch error:', e);
+          if (displayedShareIdToastRef.current === shareId) {
+            displayedShareIdToastRef.current = null;
+          }
         }
       };
 
       fetchData();
     } else {
-      // Only set sample data if no JSON has been entered yet
-      if (!jsonString) {
-        setJsonString(sampleJson);
-        const result = parseJson(sampleJson);
-        setParsedData(result.data);
-        setIsArray(result.isArray);
-      }
+      // No shareId, so clear the ref, so if user navigates back to a share link, toast shows.
+      displayedShareIdToastRef.current = null;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [shareId]);
+  }, [shareId, handleJsonChange]); // Added handleJsonChange to deps
+
+  // Effect 2: Handle initial sample data if no shareId and no existing jsonString
+  useEffect(() => {
+    if (!shareId && !jsonString) {
+      // only run if no shareId and jsonString is empty
+      handleJsonChange(sampleJson);
+    }
+  }, [shareId, jsonString, sampleJson, handleJsonChange]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-vison-bg">
@@ -305,9 +329,32 @@ const Index: React.FC = () => {
                 disabled={isSharing || jsonString === sampleJson}
                 onClick={handleShare}
                 aria-label="Share JSON"
-                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-semibold transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-semibold transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed min-w-[80px]"
               >
-                Share
+                {isSharing ? (
+                  <svg
+                    className="animate-spin h-5 w-5 text-vison-dark-charcoal"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                ) : (
+                  'Share'
+                )}
               </button>
               <div>
                 {/* Copy Button */}

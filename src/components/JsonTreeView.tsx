@@ -1,3 +1,5 @@
+import React, { useCallback, useMemo, useState } from 'react';
+
 import {
   Check,
   ChevronDown,
@@ -7,7 +9,6 @@ import {
   Pencil,
   X,
 } from 'lucide-react';
-import React, { useCallback, useMemo, useState } from 'react'; // Removed useEffect
 import {
   convertValueType,
   isEditableValue,
