@@ -52,6 +52,7 @@
 
   * {
     @apply border-border;
+    font-family: 'Nunito Sans', sans-serif;
   }
 
   body {
