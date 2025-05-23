@@ -33,18 +33,6 @@ const Index: React.FC = () => {
 
   const displayedShareIdToastRef = useRef<string | null>(null);
 
-  const sampleJson = `{
-    "name": "Vison Example",
-    "version": "1.0.0",
-    "active": true,
-    "description": "A sample JSON for demonstrating Vison",
-    "features": ["Easy editing", "Table view", "Real-time updates"],
-    "stats": {
-      "users": 1250,
-      "rating": 4.8
-    }
-  }` as string; // Sample JSON for initial load
-
   // Handle view transition with animation
   const handleViewChange = useCallback(
     (newView: ViewMode) => {
@@ -192,7 +180,7 @@ const Index: React.FC = () => {
       });
   };
 
-  // Effect 1: Handle fetching and initial processing of shared JSON
+  // Effect: Handle fetching and initial processing of shared JSON
   useEffect(() => {
     if (shareId) {
       const keyHash = window.location.hash.replace(/^#/, '');
@@ -253,16 +241,11 @@ const Index: React.FC = () => {
     } else {
       // No shareId, so clear the ref, so if user navigates back to a share link, toast shows.
       displayedShareIdToastRef.current = null;
+      if (!jsonString) {
+        handleJsonChange('');
+      }
     }
-  }, [shareId, handleJsonChange]); // Added handleJsonChange to deps
-
-  // Effect 2: Handle initial sample data if no shareId and no existing jsonString
-  useEffect(() => {
-    if (!shareId && !jsonString) {
-      // only run if no shareId and jsonString is empty
-      handleJsonChange(sampleJson);
-    }
-  }, [shareId, jsonString, sampleJson, handleJsonChange]);
+  }, [shareId, handleJsonChange, jsonString]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-vison-bg">
@@ -326,7 +309,7 @@ const Index: React.FC = () => {
             <div className="flex justify-between items-center">
               {/* Share Button */}
               <button
-                disabled={isSharing || jsonString === sampleJson}
+                disabled={isSharing}
                 onClick={handleShare}
                 aria-label="Share JSON"
                 className="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-vison-peach text-vison-dark-charcoal font-semibold transition-all hover:bg-vison-peach-dark hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed min-w-[80px]"
