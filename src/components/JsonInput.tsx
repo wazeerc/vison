@@ -112,6 +112,10 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
     setJsonText('');
     onJsonChange('');
     toast.success('Input JSON cleared');
+    // If on a shared link, also clear the URL (remove shareId from route)
+    if (window.location.pathname.startsWith('/share/')) {
+      window.history.replaceState({}, '', '/');
+    }
   };
 
   return (
@@ -143,8 +147,9 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
 
         <div className="flex gap-2">
           <button
+            disabled={!jsonText}
             onClick={handleReset}
-            className="btn-with-icon flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors hover:shadow-soft active:scale-[0.98]"
+            className="btn-with-icon flex items-center gap-2 px-4 py-2 text-vison-charcoal bg-vison-peach rounded-xl hover:bg-vison-peach-dark transition-colors hover:shadow-soft active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
             title="Reset"
           >
             <RotateCcw className="w-5 h-5" />

@@ -190,6 +190,11 @@ const Index: React.FC = () => {
   // Effect: Handle fetching and initial processing of shared JSON
   useEffect(() => {
     if (shareId) {
+      // If the user has reset (URL changed but shareId param still present), don't try to load shared data
+      if (window.location.pathname === '/' && !window.location.hash) {
+        // Do nothing, user has reset
+        return;
+      }
       const keyHash = window.location.hash.replace(/^#/, '');
       if (!keyHash) {
         toast.error('Missing decryption key in link.');
