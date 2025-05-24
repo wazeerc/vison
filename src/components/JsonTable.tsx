@@ -74,7 +74,7 @@ const JsonTable: React.FC<JsonTableProps> = ({ jsonData, onDataChange }) => {
 
   return (
     <div className="vison-card animate-fade-in hover:shadow-soft-lg transition-all duration-300">
-      <div className="vison-table-container overflow-auto max-h-[500px]">
+      <div className="vison-table-container overflow-auto max-h-[500px] scrollbar-thin scrollbar-thumb-vison-purple/50 scrollbar-track-gray-100">
         <table className="vison-table">
           <thead>
             <tr>

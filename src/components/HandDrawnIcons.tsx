@@ -150,8 +150,6 @@ export const VisonLogo: React.FC<{ className?: string }> = ({ className }) => {
         x="0"
         y="0"
         rx="0"
-        fill="#FFFFFF"
-        stroke="#FFFFFF"
         strokeWidth="0"
         strokeOpacity="100%"
         paintOrder="stroke"
@@ -170,13 +168,37 @@ export const VisonLogo: React.FC<{ className?: string }> = ({ className }) => {
         alignmentBaseline="middle"
         style={{ color: 'rgb(155, 135, 245)' }}
       >
+        <g
+          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+          className="[transform-style:preserve-3d] animate-spin-y"
+        >
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.5"
+            d="M3.25 2.75 1.75 4l1.5 1.25"
+          />
+        </g>
+        <g
+          style={{ transformBox: 'fill-box', transformOrigin: 'center' }}
+          className="[transform-style:preserve-3d] animate-spin-y"
+        >
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.5"
+            d="M7.25 2.75 8.75 4l-1.5 1.25"
+          />
+        </g>
         <path
           stroke="currentColor"
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth="1.5"
-          d="M3.25 2.75 1.75 4l1.5 1.25m3.5-2.5L8.25 4l-1.5 1.25m-5 3.5v3.5a2 2 0 0 0 2 2h8.5a2 2 0 0 0 2-2v-8.5a2 2 0 0 0-2-2h-.5"
-        ></path>
+          d="m1.75 8.5v3.5a2 2 0 0 0 2 2h8.5a2 2 0 0 0 2-2v-8.5a2 2 0 0 0-2-2h-.5"
+        />
       </svg>
     </svg>
   );

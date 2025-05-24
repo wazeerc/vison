@@ -115,6 +115,10 @@ export default {
 					'70%': { opacity: '0.5', transform: 'translateY(-5px)' },
 					'100%': { opacity: '0', transform: 'translateY(-8px)' },
 				},
+				'spin-y': {
+          '0%': { transform: 'rotateZ(0deg)' },
+          '100%': { transform: 'rotateZ(360deg)' },
+        },
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
@@ -126,6 +130,7 @@ export default {
 				'shine': 'shine 2s linear infinite', // Added shine animation
 				'view-enter': 'view-enter 0.3s ease-in',
 				'view-exit': 'view-exit 0.3s ease-out',
+				'spin-y': 'spin-y 5s ease infinite both alternate',
 			},
 			boxShadow: {
 				'soft': '0 4px 12px rgba(0, 0, 0, 0.05)',

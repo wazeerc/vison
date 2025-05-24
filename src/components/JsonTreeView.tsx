@@ -236,7 +236,7 @@ const JsonTreeView: React.FC<JsonTreeViewProps> = ({ jsonData, onDataChange }) =
         />
       </div>
       <div className="mt-4 text-sm text-vison-charcoal/85">
-        <span className="ml-1 text-xs">(Click on primitive values to edit)</span>
+        <span className="ml-1 text-xs italic">Click on the values to edit</span>
       </div>
     </div>
   );
