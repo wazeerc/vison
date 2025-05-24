@@ -17,7 +17,6 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
   const [jsonText, setJsonText] = useState(initialValue);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -62,47 +61,6 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
     };
     reader.readAsText(file);
   };
-
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = () => {
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-
-    const file = e.dataTransfer.files?.[0];
-    if (!file) return;
-
-    if (!file.name.endsWith('.json')) {
-      toast.error('Please drop a JSON file');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = event => {
-      const content = event.target?.result as string;
-      try {
-        const result = parseJson(content);
-        if (result.error) {
-          toast.error(`Invalid JSON: ${result.error}`);
-          return;
-        }
-        setJsonText(content);
-        onJsonChange(content);
-      } catch (error) {
-        toast.error('Failed to parse JSON file');
-        console.error('Error parsing JSON file:', error);
-      }
-    };
-    reader.readAsText(file);
-  };
-
   const triggerFileInput = () => {
     fileInputRef.current?.click();
   };
@@ -122,18 +80,8 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
 
   return (
     <div className="my-8 vison-card animate-fade-in hover:shadow-purple-lg transition-all duration-300">
-      <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal/80">Input JSON</h2>
-
-      <div
-        className={`p-4 mb-4 border-2 border-dashed rounded-xl transition-colors ${
-          isDragging
-            ? 'bg-vison-purple/20 border-vison-purple-dark'
-            : 'border-gray-200 hover:border-vison-purple'
-        }`}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-      >
+      <h2 className="mb-4 text-xl font-semibold text-vison-dark-charcoal/80">Input JSON</h2>{' '}
+      <div className="p-4 mb-4 border-2 border-dashed rounded-xl transition-colors border-gray-200 hover:border-vison-purple">
         <Textarea
           ref={textareaRef}
           autoFocus
@@ -153,7 +101,6 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
           onChange={handleTextChange}
         />
       </div>
-
       <div className="flex items-center justify-between">
         <div className="text-sm text-vison-charcoal/85 italic">
           {jsonText ? `${jsonText.length} characters` : ''}
