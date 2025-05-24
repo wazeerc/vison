@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS vison (
 4. Optional: Set up automatic cleanup (Edge Function or cron) to delete rows older than 15 minutes:
 
 ```sql
-DELETE FROM shared_json WHERE created_at < NOW() - INTERVAL '15 minutes';
+DELETE FROM vison WHERE created_at < NOW() - INTERVAL '15 minutes';
 ```
 
 Note: In the current implementation, the Supabase table is cleared every 24 hours using a cron job which invokes an [Edge Function](https://supabase.com/docs/guides/functions).
