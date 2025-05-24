@@ -36,7 +36,7 @@ const Index: React.FC = () => {
 
   // Helper function to remove share key from URL after a delay when link is expired
   const removeExpiredKeyFromUrl = useCallback(
-    (delay: number = 4000) => {
+    (delay: number = 3000) => {
       setTimeout(() => {
         if (shareId) {
           navigate('/', { replace: true });
