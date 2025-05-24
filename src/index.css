@@ -162,4 +162,16 @@
     --scrollbar-thumb: theme('colors.vison.purple / 50%');
     --scrollbar-track: theme('colors.gray.100');
   }
+
+  /* Hide page scrollbar while keeping scrolling functionality */
+  html,
+  body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer and Edge */
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+  }
 }

@@ -137,7 +137,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
         <Textarea
           ref={textareaRef}
           autoFocus
-          className="w-full min-h-[180px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-purple focus:bg-white transition-all duration-200"
+          className="w-full min-h-[180px] max-h-[400px] p-3 text-sm font-mono bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-vison-purple focus:bg-white transition-all duration-200 scrollbar-thin scrollbar-thumb-vison-purple/50 scrollbar-track-gray-100"
           placeholder={[
             '{',
             '  "name": "Vison",',
