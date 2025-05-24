@@ -103,7 +103,7 @@ const JsonInput: React.FC<JsonInputProps> = ({ onJsonChange, initialValue = '' }
       </div>
       <div className="flex items-center justify-between">
         <div className="text-sm text-vison-charcoal/85 italic">
-          {jsonText ? `${jsonText.length} characters` : ''}
+          {jsonText ? `${jsonText.length} characters` : 'Paste your JSON content above or upload a file'}
         </div>
 
         <div className="flex gap-2">
