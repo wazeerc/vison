@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Footer from '../components/Footer';
 import { CopyIcon, DownloadIcon, TableViewIcon, TreeViewIcon } from '../components/HandDrawnIcons';
@@ -21,6 +21,7 @@ const COMPLEXITY_DEPTH_THRESHOLD = 4; // Switch to tree view if depth is 4 or mo
 const Index: React.FC = () => {
   // Check for share id in URL
   const params = useParams<{ id?: string }>();
+  const navigate = useNavigate();
   const shareId = params.id;
   const [jsonString, setJsonString] = useState<string>('');
   // Use JsonValue for better typing, though top level could be object or array
@@ -30,9 +31,20 @@ const Index: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewMode>('table'); // State for current view
   const [isTransitioning, setIsTransitioning] = useState<boolean>(false);
   const [displayedView, setDisplayedView] = useState<ViewMode>('table'); // What's actually shown
-
   const displayedShareIdToastRef = useRef<string | null>(null);
   const autoSwitchedRef = useRef<boolean>(false);
+
+  // Helper function to remove share key from URL after a delay when link is expired
+  const removeExpiredKeyFromUrl = useCallback(
+    (delay: number = 4000) => {
+      setTimeout(() => {
+        if (shareId) {
+          navigate('/', { replace: true });
+        }
+      }, delay);
+    },
+    [navigate, shareId]
+  );
 
   // Handle view transition with animation
   const handleViewChange = useCallback(
@@ -198,6 +210,7 @@ const Index: React.FC = () => {
       const keyHash = window.location.hash.replace(/^#/, '');
       if (!keyHash) {
         toast.error('Missing decryption key in link.');
+        removeExpiredKeyFromUrl();
         return;
       }
 
@@ -208,12 +221,12 @@ const Index: React.FC = () => {
             .select('json,created_at')
             .eq('id', shareId)
             .single();
-
           if (fetchError || !data) {
             toast.error('Invalid or expired share link.');
             if (displayedShareIdToastRef.current === shareId) {
               displayedShareIdToastRef.current = null;
             }
+            removeExpiredKeyFromUrl();
             return;
           }
 
@@ -226,6 +239,7 @@ const Index: React.FC = () => {
             if (displayedShareIdToastRef.current === shareId) {
               displayedShareIdToastRef.current = null;
             }
+            removeExpiredKeyFromUrl();
             return;
           }
 
@@ -246,6 +260,7 @@ const Index: React.FC = () => {
           if (displayedShareIdToastRef.current === shareId) {
             displayedShareIdToastRef.current = null;
           }
+          removeExpiredKeyFromUrl();
         }
       };
 
@@ -257,7 +272,7 @@ const Index: React.FC = () => {
         handleJsonChange('');
       }
     }
-  }, [shareId, handleJsonChange, jsonString]);
+  }, [shareId, handleJsonChange, jsonString, removeExpiredKeyFromUrl]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white to-vison-bg">
