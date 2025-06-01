@@ -2,7 +2,7 @@
 
 <img src="public\vison.svg" alt="Vison Logo" width="125">
 
-### Try out [Vison](https://vi-son.netlify.app)!
+### Try out [Vison](https://vison.wazeer.dev)!
 [![Netlify Status](https://api.netlify.com/api/v1/badges/a5cb7aaa-62dc-4600-bf9d-d1e82d3a5eac/deploy-status)](https://app.netlify.com/projects/vi-son/deploys)
 
 ## ✨ Features
