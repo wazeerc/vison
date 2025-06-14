@@ -1,4 +1,4 @@
-name: Delete Rows Daily
+name: Daily Purge
 
 on:
   schedule:
