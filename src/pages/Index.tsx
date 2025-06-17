@@ -148,7 +148,7 @@ const Index: React.FC = () => {
       const url = `${window.location.origin}/share/${data.id}#${exportedKey}`;
       setShareLink(url);
       await navigator.clipboard.writeText(url);
-      toast.info('Anyone with this link can access your JSON data, it will expire in 15 minutes.');
+      toast.info('Anyone with this link can access your JSON data, it will expire in 30 minutes.');
       toast.success('Shareable Vison link copied to your clipboard!');
     } catch (err) {
       toast.error('Failed to create share link');
@@ -233,8 +233,8 @@ const Index: React.FC = () => {
           const created = new Date(data.created_at);
           const now = new Date();
           const diff = (now.getTime() - created.getTime()) / 1000 / 60;
-          if (diff > 15) {
-            // 15 minutes expiry
+          if (diff > 30) {
+            // 30 minutes expiry
             toast.error('This Vison link has expired.');
             if (displayedShareIdToastRef.current === shareId) {
               displayedShareIdToastRef.current = null;
