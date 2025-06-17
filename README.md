@@ -15,7 +15,7 @@
 - 📥 **Download:** Export your edited JSON as a file with a single click.
 - 📄 **Copy to Clipboard:** Copy formatted JSON to your clipboard instantly.
 - 🔐 **Secure Share:** End-to-end encrypted sharing, your data is encrypted in your browser, and only those with your unique link can access it.
-- ⏳ **Expiring Links:** Shared links expire after 15 minutes for extra privacy.
+- ⏳ **Expiring Links:** Shared links expire after 30 minutes for extra privacy.
 - ☁️ **Supabase Integration:** Secure Share feature uses Supabase for backend storage (bring your own keys).
 
 > [!NOTE]
@@ -79,10 +79,10 @@ CREATE TABLE IF NOT EXISTS vison (
   CREATE INDEX IF NOT EXISTS idx_vison_created_at ON vison(created_at);
 ```
 
-4. Optional: Set up automatic cleanup (Edge Function or cron) to delete rows older than 15 minutes:
+4. Optional: Set up automatic cleanup (Edge Function or cron) to delete rows older than 30 minutes:
 
 ```sql
-DELETE FROM vison WHERE created_at < NOW() - INTERVAL '15 minutes';
+DELETE FROM vison WHERE created_at < NOW() - INTERVAL '30 minutes';
 ```
 
 Note: In the current implementation, the Supabase table is cleared every 24 hours using a cron job which invokes an [Edge Function](https://supabase.com/docs/guides/functions).
