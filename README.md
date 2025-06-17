@@ -48,7 +48,17 @@ cd vison
 npm install
 ```
 
-3. **Run the development server:**
+3. **Set up environment variables:**
+
+Copy the example environment file and configure your Supabase credentials:
+
+```bash
+cp .env.example .env
+```
+
+Edit the `.env` file with your actual Supabase credentials (see [Supabase Setup](#supabase-setup-for-secure-share) below).
+
+4. **Run the development server:**
 
 ```bash
 npm run dev
@@ -61,11 +71,11 @@ The application will be available at `http://localhost:8080`.
 To use the Secure Share feature, you need a free [Supabase](https://supabase.com/) account.
 
 1. Create a Supabase project and get your Project URL and anon key from the API settings.
-2. Set up your `.env` file in the project root:
+2. Copy `.env.example` to `.env` and update with your credentials:
 
 ```env
-VITE_SUPABASE_URL="https://your-project.supabase.co"
-VITE_SUPABASE_KEY="your-anon-key"
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_KEY=your-anon-key
 ```
 
 3. Create the table in the SQL editor:
