@@ -19,7 +19,7 @@
 - ☁️ **Supabase Integration:** Secure Share feature uses Supabase for backend storage (bring your own keys).
 
 > [!NOTE]
-> Vison is currently in **Beta**. You might encounter bugs. Feel free to open an issue or submit a pull request.
+> Vison is currently in **Beta**. You might encounter bugs (*most of the codebase was vibe-coded*). Feel free to open an issue or submit a pull request.
 
 ## Requirements
 
